@@ -9,17 +9,21 @@
 <meta name="description" content="Save the Date. Martina Coronel Guglielmone celebra sus Quince Años el Sábado 23 de Mayo 2026 a las 20:00 hs. Una noche para celebrar sueños, recuerdos y nuevos comienzos."/>
 <meta name="theme-color" content="#faf7f0"/>
 
-<!-- Open Graph -->
+<!-- Open Graph — WhatsApp, Facebook, LinkedIn, etc.
+     IMPORTANTE: preview.jpg debe ser URL absoluta en producción.
+     Ejemplo: content="https://tudominio.com/preview.jpg"
+     Tamaño ideal: 1200×630 px, menos de 300KB -->
 <meta property="og:type"         content="website"/>
 <meta property="og:title"        content="Martina · Mis Quince Años · 23 Mayo 2026"/>
 <meta property="og:description"  content="Una noche para celebrar sueños, recuerdos y nuevos comienzos. Estás invitada."/>
 <meta property="og:image"        content="preview.jpg"/>
 <meta property="og:image:width"  content="1200"/>
 <meta property="og:image:height" content="630"/>
+<meta property="og:image:type"   content="image/jpeg"/>
 <meta property="og:url"          content="https://example.com/martina"/>
 <meta property="og:site_name"    content="Quince de Martina"/>
 
-<!-- Twitter Card -->
+<!-- Twitter / X Card -->
 <meta name="twitter:card"        content="summary_large_image"/>
 <meta name="twitter:title"       content="Martina · Mis Quince Años · 23 Mayo 2026"/>
 <meta name="twitter:description" content="Una noche para celebrar sueños, recuerdos y nuevos comienzos."/>
@@ -28,7 +32,7 @@
 <!-- Fonts: Cormorant Garamond + Pinyon Script + DM Sans -->
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Pinyon+Script&family=DM+Sans:wght@200;300;400;500&display=swap"/>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Pinyon+Script&family=DM+Sans:wght@200;300;400;500&display=swap"/>
 
 <style>
 
@@ -107,15 +111,15 @@ img, svg { display: block }
   background-position: center top;
   background-attachment: scroll; /* scroll funciona mejor que fixed en móvil */
 }
-/* Overlay semitransparente — ajustá las opacidades según tu foto */
+/* Overlay más transparente — la foto se ve con claridad */
 #bg::after {
   content: '';
   position: absolute; inset: 0;
   background: linear-gradient(
     to bottom,
-    rgba(248,245,238,.72) 0%,
-    rgba(248,245,238,.58) 40%,
-    rgba(248,245,238,.70) 100%
+    rgba(248,245,238,.48) 0%,
+    rgba(248,245,238,.38) 40%,
+    rgba(248,245,238,.48) 100%
   );
 }
 
@@ -1410,11 +1414,33 @@ updateCountdown();
 setInterval(updateCountdown, 1000);
 
 /* ════════════════════════════════════════════════════════════════
-   6. RSVP FORM SUBMISSION
-   Connects to Formspree — replace YOUR_FORM_ID with real ID.
-   Alternatively replace fetch URL with your endpoint.
-════════════════════════════════════════════════════════════════ */
-const FORMSPREE_URL = 'https://formspree.io/f/YOUR_FORM_ID'; // ← replace
+   6. RSVP → GOOGLE FORMS (sin iframe, sin cambiar el formulario)
+   ─────────────────────────────────────────────────────────────
+   CÓMO OBTENER LOS entry.XXXXXXXXX DE TU FORMULARIO:
+   1. Abrí tu Google Form en el navegador
+   2. Hacé clic en "Vista previa" (ícono del ojo)
+   3. Abrí DevTools → Network
+   4. Completá y enviá el formulario de prueba
+   5. Buscá la request a "formResponse"
+   6. En "Payload" verás: entry.123456789=valor
+   7. Copiá cada entry.XXXXXXXXX y pegalo abajo
+
+   ALTERNATIVA MÁS FÁCIL:
+   1. Abrí tu Form → ⋮ → "Obtener vínculo de relleno previo"
+   2. Completá cada campo → "Obtener vínculo"
+   3. En la URL verás: entry.XXXXXXXXX=tuvalor
+   ────────────────────────────────────────────────────────────── */
+
+// ID del formulario (extraído de tu iframe)
+const GF_BASE = 'https://docs.google.com/forms/d/e/1FAIpQLScDzkfzvYt9x7ofqzF-jc1xsM64rMPMtoXQddxPmBE56pHnyQ/formResponse';
+
+// ⚠️ REEMPLAZÁ estos IDs con los de TU formulario
+// (seguí los pasos de arriba para obtenerlos)
+const GF_FIELDS = {
+  nombre:    'entry.000000001',   // ← reemplazá con tu entry ID del campo nombre
+  invitados: 'entry.000000002',   // ← reemplazá con tu entry ID del campo invitados
+  mensaje:   'entry.000000003',   // ← reemplazá con tu entry ID del campo mensaje
+};
 
 document.getElementById('rsvpForm').addEventListener('submit', async function(e) {
   e.preventDefault();
@@ -1425,7 +1451,7 @@ document.getElementById('rsvpForm').addEventListener('submit', async function(e)
   const btn     = document.getElementById('f-submit');
   const btnTxt  = document.getElementById('f-btn-text');
 
-  // Basic validation
+  // Validación
   if (!name) {
     const f = document.getElementById('f-name');
     f.style.borderColor = 'rgba(184,144,46,.7)';
@@ -1434,38 +1460,46 @@ document.getElementById('rsvpForm').addEventListener('submit', async function(e)
     return;
   }
 
-  // Loading state
-  btn.disabled     = true;
+  btn.disabled       = true;
   btnTxt.textContent = 'Enviando...';
 
   try {
-    const res = await fetch(FORMSPREE_URL, {
-      method:  'POST',
-      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-      body:    JSON.stringify({ nombre: name, invitados: guests, mensaje: message, _subject: 'RSVP · Quince Martina 2026' }),
+    // Construir FormData con los entry IDs de Google Forms
+    const body = new URLSearchParams();
+    body.append(GF_FIELDS.nombre,    name);
+    body.append(GF_FIELDS.invitados, guests || 'No especificado');
+    body.append(GF_FIELDS.mensaje,   message || '');
+
+    // no-cors: Google Forms no admite CORS, pero los datos llegan igual.
+    // No podemos leer la respuesta (opaque), pero el envío sí funciona.
+    await fetch(GF_BASE, {
+      method: 'POST',
+      mode:   'no-cors',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body:   body.toString(),
     });
 
-    if (res.ok) {
-      // Success
-      document.getElementById('rsvpForm').style.display    = 'none';
-      document.getElementById('formSuccess').classList.add('show');
-    } else {
-      throw new Error('Server error');
-    }
-  } catch {
-    // Fallback to WhatsApp if Formspree not configured
-    let txt  = `¡Hola Martina! 🌸\n\nSoy *${name}*`;
-    txt += guests ? ` y confirmo asistencia con *${guests} persona${parseInt(guests) > 1 ? 's' : ''}*` : ` y confirmo mi asistencia`;
+    // Con no-cors siempre llegamos acá (incluso si hay error).
+    // Google Forms guarda el dato correctamente si los entry IDs son correctos.
+    document.getElementById('rsvpForm').style.display = 'none';
+    document.getElementById('formSuccess').classList.add('show');
+
+  } catch (err) {
+    // Sólo falla si no hay conexión — fallback a WhatsApp
+    let txt = `¡Hola Martina! 🌸\n\nSoy *${name}*`;
+    txt += guests
+      ? ` y confirmo asistencia con *${guests} persona${parseInt(guests) > 1 ? 's' : ''}*`
+      : ` y confirmo mi asistencia`;
     txt += ` a tus Quince Años.\n📅 *Sábado 23 de Mayo 2026 · 20:00 hs*`;
     if (message) txt += `\n\n💌 ${message}`;
     window.open(`https://wa.me/?text=${encodeURIComponent(txt)}`, '_blank', 'noopener');
 
-    btn.disabled     = false;
+    btn.disabled       = false;
     btnTxt.textContent = 'Confirmar Asistencia';
   }
 });
 
-// Clear field error highlight on input
+// Limpiar error al escribir
 document.getElementById('f-name').addEventListener('input', function() {
   this.style.borderColor = '';
   this.style.boxShadow   = '';

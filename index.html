@@ -57,11 +57,11 @@
   --gold-pale:   #f0dba0;
   --gold-ghost:  rgba(184,144,46,.07);
 
-  /* --- Text shadows (luxury depth) --- */
-  --shadow-text-sm:  0 1px 4px rgba(0,0,0,.10);
-  --shadow-text-md:  0 2px 10px rgba(0,0,0,.12);
-  --shadow-text-lg:  0 3px 18px rgba(0,0,0,.14);
-  --shadow-gold:     0 2px 16px rgba(184,144,46,.22);
+  /* --- Text shadows — más visibles --- */
+  --shadow-text-sm:  0 1px 3px rgba(0,0,0,.22), 0 2px 8px rgba(0,0,0,.12);
+  --shadow-text-md:  0 2px 6px rgba(0,0,0,.28), 0 4px 16px rgba(0,0,0,.15);
+  --shadow-text-lg:  0 2px 8px rgba(0,0,0,.35), 0 6px 24px rgba(0,0,0,.18);
+  --shadow-gold:     0 2px 10px rgba(184,144,46,.45), 0 4px 22px rgba(184,144,46,.25);
 
   /* --- UI shadows --- */
   --shadow-card:     0 4px 6px rgba(0,0,0,.03), 0 16px 48px rgba(80,50,20,.08), 0 40px 80px rgba(80,50,20,.05);
@@ -78,8 +78,9 @@
   --spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 
   /* ─────────────────────────────────────────────────────────────
-     BACKGROUND IMAGE — alojá tu foto junto al HTML
-     Reemplazá bg.jpg con el nombre de tu archivo
+     BACKGROUND IMAGE
+     Colocá bg.jpg en la MISMA CARPETA que el index.html
+     Si está en una subcarpeta: url('images/bg.jpg')
      ───────────────────────────────────────────────────────────── */
   --bg-photo: url('bg.jpg');
 }
@@ -96,27 +97,26 @@ button { border: none; background: none; font-family: inherit; cursor: pointer }
 img, svg { display: block }
 
 /* ═══════════════════════════════════════════════════════════════
-   BACKGROUND
-   Layered: photo → gradient overlay → paper tone
+   BACKGROUND — bg.jpg debe estar en la misma carpeta que el HTML
 ═══════════════════════════════════════════════════════════════ */
 #bg {
   position: fixed; inset: 0; z-index: 0;
-  /* Background photo */
+  background-color: #f2ead8; /* color de fallback mientras carga */
   background-image: var(--bg-photo);
   background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
+  background-position: center top;
+  background-attachment: scroll; /* scroll funciona mejor que fixed en móvil */
 }
-/* Multi-layer overlay: keeps readability while letting photo breathe */
+/* Overlay semitransparente — ajustá las opacidades según tu foto */
 #bg::after {
   content: '';
   position: absolute; inset: 0;
-  background:
-    linear-gradient(to bottom,
-      rgba(248,245,238,.80) 0%,
-      rgba(248,245,238,.68) 40%,
-      rgba(248,245,238,.78) 100%);
-  backdrop-filter: blur(1px);
+  background: linear-gradient(
+    to bottom,
+    rgba(248,245,238,.72) 0%,
+    rgba(248,245,238,.58) 40%,
+    rgba(248,245,238,.70) 100%
+  );
 }
 
 /* Paper grain texture */
@@ -560,6 +560,33 @@ main { position: relative; z-index: 10 }
 .details-card:hover .info-icon { border-color: rgba(184,144,46,.4); transform: scale(1.08) }
 .info-icon svg { width: 17px; height: 17px; stroke: var(--gold); fill: none; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round }
 
+/* ── Calendar button — same look as info-icon but interactive ── */
+.cal-btn {
+  background: transparent;
+  cursor: pointer;
+  position: relative;
+}
+.cal-btn:hover {
+  border-color: var(--gold-mid) !important;
+  background: rgba(184,144,46,.06);
+  transform: scale(1.12) !important;
+}
+.cal-btn:active { transform: scale(.96) !important }
+
+/* Tooltip that appears after clicking */
+.cal-tip {
+  display: block;
+  font-family: var(--f-ui);
+  font-size: .58rem; font-weight: 400;
+  letter-spacing: .18em; text-transform: uppercase;
+  color: var(--gold-mid);
+  margin-top: 6px;
+  min-height: 1em;
+  opacity: 0;
+  transition: opacity .4s ease;
+}
+.cal-tip.show { opacity: 1 }
+
 .info-label {
   font-family: var(--f-ui);
   font-size: .55rem; font-weight: 400;
@@ -976,12 +1003,18 @@ footer {
       <div class="info-grid" role="list">
 
         <div class="info-col" role="listitem">
-          <div class="info-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-          </div>
+          <!-- Botón: al tocar descarga el .ics y abre opciones de calendario -->
+          <button class="info-icon cal-btn"
+                  onclick="addToCalendar()"
+                  title="Guardar en calendario"
+                  aria-label="Agregar al calendario">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="14" x2="8" y2="14" stroke-width="2.5" stroke-linecap="round"/><line x1="12" y1="14" x2="12" y2="14" stroke-width="2.5" stroke-linecap="round"/><line x1="16" y1="14" x2="16" y2="14" stroke-width="2.5" stroke-linecap="round"/></svg>
+          </button>
           <p class="info-label">Fecha</p>
           <p class="info-value">23<br>Mayo</p>
           <p class="info-note">Sábado · 2026</p>
+          <!-- Tooltip confirmación -->
+          <span class="cal-tip" id="cal-tip" aria-live="polite"></span>
         </div>
 
         <div class="info-sep" aria-hidden="true"></div>
@@ -1526,8 +1559,101 @@ document.getElementById('f-name').addEventListener('input', function() {
 })();
 
 /* ════════════════════════════════════════════════════════════════
-   8. SMOOTH SCROLL for nav anchors
+   9. ADD TO CALENDAR
+   Genera un archivo .ics universal compatible con:
+   Google Calendar, Apple Calendar, Outlook y cualquier app
+   de calendario en iOS y Android.
 ════════════════════════════════════════════════════════════════ */
+function addToCalendar() {
+  // Datos del evento
+  const event = {
+    title:       'Quince de Martina Coronel Guglielmone',
+    start:       '20260523T200000',   // 23 Mayo 2026 20:00 hs
+    end:         '20260524T020000',   // duración estimada 6 hs
+    description: 'Mis Quince Años · Una noche para celebrar sueños, recuerdos y nuevos comienzos.',
+    location:    'Buenos Aires, Argentina',
+    uid:         'martina-xv-2026@quince',
+  };
+
+  // Construir contenido .ics (RFC 5545)
+  const ics = [
+    'BEGIN:VCALENDAR',
+    'VERSION:2.0',
+    'PRODID:-//Quince de Martina//ES',
+    'CALSCALE:GREGORIAN',
+    'METHOD:PUBLISH',
+    'BEGIN:VEVENT',
+    `UID:${event.uid}`,
+    `DTSTAMP:${new Date().toISOString().replace(/[-:]/g,'').split('.')[0]}Z`,
+    `DTSTART:${event.start}`,
+    `DTEND:${event.end}`,
+    `SUMMARY:${event.title}`,
+    `DESCRIPTION:${event.description}`,
+    `LOCATION:${event.location}`,
+    'STATUS:CONFIRMED',
+    'BEGIN:VALARM',
+    'TRIGGER:-P1D',          // recordatorio 1 día antes
+    'ACTION:DISPLAY',
+    `DESCRIPTION:Mañana: ${event.title}`,
+    'END:VALARM',
+    'END:VEVENT',
+    'END:VCALENDAR',
+  ].join('\r\n');
+
+  // Detectar iOS/macOS para abrir directamente en Apple Calendar
+  const isApple = /iPhone|iPad|iPod|Macintosh/.test(navigator.userAgent);
+
+  if (isApple) {
+    // En iOS/macOS el blob se abre directamente en Calendar
+    const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
+    const url  = URL.createObjectURL(blob);
+    window.open(url, '_blank');
+    setTimeout(() => URL.revokeObjectURL(url), 5000);
+  } else {
+    // Android / Windows / otros: descarga el .ics
+    const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
+    const link = document.createElement('a');
+    link.href     = URL.createObjectURL(blob);
+    link.download = 'quince-martina-2026.ics';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    setTimeout(() => URL.revokeObjectURL(link.href), 5000);
+  }
+
+  // Mostrar tooltip de confirmación
+  const tip = document.getElementById('cal-tip');
+  if (tip) {
+    tip.textContent = '✓ Guardado';
+    tip.classList.add('show');
+    setTimeout(() => tip.classList.remove('show'), 2800);
+  }
+}
+
+/* ════════════════════════════════════════════════════════════════
+   10. BG IMAGE DIAGNOSTIC
+   Si bg.jpg no carga, muestra mensaje en consola con instrucciones
+════════════════════════════════════════════════════════════════ */
+(function checkBg() {
+  const probe = new Image();
+  probe.onload = () => console.info('✅ bg.jpg cargó correctamente.');
+  probe.onerror = () => {
+    console.warn(
+      '%c⚠️ bg.jpg no encontrado',
+      'color:#b8902e;font-weight:bold;font-size:14px',
+      '\n\nVerificá que:\n' +
+      '  1. El archivo se llama exactamente "bg.jpg" (minúsculas)\n' +
+      '  2. Está en la MISMA CARPETA que el index.html\n' +
+      '  3. El hosting lo subió correctamente (revisá el file manager)\n' +
+      '  4. No está en una subcarpeta — si está en /images/ cambiá\n' +
+      '     --bg-photo a url(\'images/bg.jpg\')'
+    );
+    // Aplicar degradado de fallback elegante
+    document.getElementById('bg').style.background =
+      'linear-gradient(160deg, #f5ece0 0%, #ede3d2 35%, #e8dcc8 65%, #f0e8d8 100%)';
+  };
+  probe.src = 'bg.jpg';
+})();
 document.querySelectorAll('a[href^="#"]').forEach(a => {
   a.addEventListener('click', e => {
     e.preventDefault();

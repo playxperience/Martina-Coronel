@@ -13,7 +13,7 @@
 <meta property="og:type"         content="website"/>
 <meta property="og:title"        content="Martina · Mis Quince Años · 23 Mayo 2026"/>
 <meta property="og:description"  content="Una noche para celebrar sueños, recuerdos y nuevos comienzos. Estás invitada."/>
-<meta property="og:image"        content="https://example.com/martina-preview.jpg"/>
+<meta property="og:image"        content="preview.jpg"/>
 <meta property="og:image:width"  content="1200"/>
 <meta property="og:image:height" content="630"/>
 <meta property="og:url"          content="https://example.com/martina"/>
@@ -23,12 +23,12 @@
 <meta name="twitter:card"        content="summary_large_image"/>
 <meta name="twitter:title"       content="Martina · Mis Quince Años · 23 Mayo 2026"/>
 <meta name="twitter:description" content="Una noche para celebrar sueños, recuerdos y nuevos comienzos."/>
-<meta name="twitter:image"       content="https://example.com/martina-preview.jpg"/>
+<meta name="twitter:image"       content="preview.jpg"/>
 
-<!-- Fonts -->
+<!-- Fonts: Cormorant Garamond + Pinyon Script + DM Sans -->
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@200;300;400;500&family=Great+Vibes&display=swap"/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Pinyon+Script&family=DM+Sans:wght@200;300;400;500&display=swap"/>
 
 <style>
 
@@ -69,24 +69,19 @@
   --shadow-btn:      0 8px 28px rgba(184,144,46,.30);
 
   /* --- Fonts --- */
-  --f-display: 'Playfair Display', Georgia, serif;
-  --f-ui:      'Inter', system-ui, sans-serif;
-  --f-script:  'Great Vibes', cursive;
+  --f-display: 'Cormorant Garamond', Georgia, serif;
+  --f-ui:      'DM Sans', system-ui, sans-serif;
+  --f-script:  'Pinyon Script', cursive;
 
   /* --- Motion --- */
   --ease:   cubic-bezier(0.22, 1, 0.36, 1);
   --spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 
   /* ─────────────────────────────────────────────────────────────
-     BACKGROUND IMAGE
-     ─────────────────────────────────────────────────────────────
-     Para usar tu propia imagen JPG, reemplaza la URL de abajo.
-     Opciones:
-       • Imagen local:  url('mi-foto.jpg')
-       • URL externa:   url('https://tudominio.com/foto.jpg')
-       • Base64:        url('data:image/jpeg;base64,...')
+     BACKGROUND IMAGE — alojá tu foto junto al HTML
+     Reemplazá bg.jpg con el nombre de tu archivo
      ───────────────────────────────────────────────────────────── */
-  --bg-photo: url('https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=1920&q=85&auto=format&fit=crop');
+  --bg-photo: url('bg.jpg');
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -1115,8 +1110,19 @@ footer {
   </p>
 </footer>
 
+<!-- ════════════════════════════════════════════
+     AUDIO — alojá music.mp3 junto al HTML
+     MP3 es el formato con mejor compatibilidad
+     en todos los navegadores y dispositivos
+════════════════════════════════════════════ -->
+<audio id="bg-audio" loop preload="none">
+  <source src="music.mp3" type="audio/mpeg"/>
+  <!-- Fallback AAC para Safari antiguo -->
+  <source src="music.aac" type="audio/aac"/>
+</audio>
+
 <!-- Music button -->
-<button id="music-btn" aria-label="Música de fondo" aria-pressed="false">
+<button id="music-btn" aria-label="Reproducir música" aria-pressed="false">
   <div class="mbars" id="mbars" aria-hidden="true">
     <div class="mbar" id="mb1" style="height:4px"></div>
     <div class="mbar" id="mb2" style="height:11px"></div>
@@ -1131,7 +1137,9 @@ footer {
 ════════════════════════════════════════════ -->
 <script>
 /* ════════════════════════════════════════════════════════════════
-   1. AMBIENT PARTICLES
+   1. PARTÍCULAS — orbes pastel iluminados, movimiento lento y flotante
+   Cada partícula es un degradado radial suave con pulso de brillo.
+   Velocidad muy reducida para efecto etéreo y elegante.
 ════════════════════════════════════════════════════════════════ */
 (function initParticles() {
   const canvas = document.getElementById('particles-canvas');
@@ -1145,53 +1153,101 @@ footer {
   resize();
   window.addEventListener('resize', resize, { passive: true });
 
+  // Paleta pastel luminosa — colores suaves pero con presencia
   const PALETTE = [
-    [224, 192, 112],   // warm gold
-    [240, 200, 168],   // peach
-    [210, 195, 240],   // lavender
-    [192, 220, 192],   // sage
-    [250, 230, 190],   // cream
+    { r: 255, g: 210, b: 180 },  // melocotón cálido
+    { r: 235, g: 195, b: 230 },  // lila suave
+    { r: 195, g: 225, b: 210 },  // menta sage
+    { r: 255, g: 230, b: 180 },  // oro pálido
+    { r: 210, g: 220, b: 255 },  // lavanda
+    { r: 255, g: 215, b: 215 },  // rosa polvo
+    { r: 210, g: 240, b: 235 },  // turquesa pálido
   ];
 
-  const particles = Array.from({ length: 48 }, () => {
-    const col = PALETTE[Math.floor(Math.random() * PALETTE.length)];
+  // 55 partículas de distintos tamaños — mezcla de pequeñas y grandes
+  const particles = Array.from({ length: 55 }, (_, i) => {
+    const col   = PALETTE[i % PALETTE.length];
+    const large = i < 12; // las primeras 12 son orbes grandes y lentas
     return {
-      x:  Math.random(), y: Math.random(),
-      r:  0.6 + Math.random() * 2.2,
-      vy: 0.00005 + Math.random() * 0.00014,
-      vx: (Math.random() - 0.5) * 0.00007,
-      ph: Math.random() * Math.PI * 2,
-      fr: 0.0004 + Math.random() * 0.001,
-      op: 0.1 + Math.random() * 0.38,
+      x:    Math.random(),
+      y:    Math.random(),
+      // Radio: orbes grandes (18-38px) y pequeñas (4-14px)
+      r:    large ? 18 + Math.random() * 20 : 4 + Math.random() * 10,
+      // Velocidad muy lenta — entre 3x y 8x más lenta que antes
+      vy:   large
+              ? 0.000008 + Math.random() * 0.000015   // orbes grandes: casi estáticas
+              : 0.000018 + Math.random() * 0.000045,   // pequeñas: muy lentas
+      vx:   (Math.random() - 0.5) * 0.000012,
+      // Fase y frecuencia del movimiento sinusoidal (meneo lateral suave)
+      ph:   Math.random() * Math.PI * 2,
+      fr:   large
+              ? 0.00015 + Math.random() * 0.00025      // oscilación muy lenta
+              : 0.00025 + Math.random() * 0.0005,
+      // Amplitud lateral del meneo
+      swing: large ? 12 + Math.random() * 20 : 6 + Math.random() * 14,
+      // Opacidad base — orbes grandes más sutiles, pequeñas más vivas
+      op:   large ? 0.12 + Math.random() * 0.18 : 0.22 + Math.random() * 0.35,
+      // Frecuencia del pulso de brillo (respiración)
+      breathFreq: 0.0003 + Math.random() * 0.0005,
+      breathPh:   Math.random() * Math.PI * 2,
       col,
     };
   });
 
   function drawFrame() {
     ctx.clearRect(0, 0, W, H);
+
     particles.forEach(p => {
-      p.y -= p.vy; p.x += p.vx; p.ph += p.fr;
-      if (p.y < -0.02) { p.y = 1.02; p.x = Math.random() }
-      if (p.x < -0.02) p.x = 1.02;
-      if (p.x >  1.02) p.x = -0.02;
+      // Actualizar posición
+      p.y      -= p.vy;
+      p.x      += p.vx;
+      p.ph     += p.fr;
+      p.breathPh += p.breathFreq;
 
-      const px    = p.x * W + Math.sin(p.ph) * 18;
-      const py    = p.y * H;
-      const pulse = 0.62 + 0.38 * Math.sin(p.ph * 1.5);
-      const [r, g, b] = p.col;
+      // Wrap cuando sale de pantalla
+      if (p.y < -0.06) { p.y = 1.06; p.x = Math.random() }
+      if (p.x < -0.06) p.x = 1.06;
+      if (p.x >  1.06) p.x = -0.06;
 
-      const grad = ctx.createRadialGradient(px, py, 0, px, py, p.r * 4);
-      grad.addColorStop(0,   `rgba(${r},${g},${b},${p.op * pulse})`);
-      grad.addColorStop(0.5, `rgba(${r},${g},${b},${p.op * pulse * 0.3})`);
-      grad.addColorStop(1,   `rgba(${r},${g},${b},0)`);
+      // Posición con meneo sinusoidal suave
+      const px = p.x * W + Math.sin(p.ph) * p.swing;
+      const py = p.y * H  + Math.cos(p.ph * 0.6) * (p.swing * 0.4);
+
+      // Pulso de brillo suave (respiración)
+      const breath = 0.72 + 0.28 * Math.sin(p.breathPh);
+      const alpha  = p.op * breath;
+
+      const { r, g, b } = p.col;
+
+      // Degradado radial con halo luminoso de 3 capas
+      const glow = p.r * 3.2;
+      const grad = ctx.createRadialGradient(px, py, 0, px, py, glow);
+      grad.addColorStop(0,    `rgba(${r},${g},${b},${alpha})`);
+      grad.addColorStop(0.35, `rgba(${r},${g},${b},${alpha * 0.55})`);
+      grad.addColorStop(0.7,  `rgba(${r},${g},${b},${alpha * 0.18})`);
+      grad.addColorStop(1,    `rgba(${r},${g},${b},0)`);
 
       ctx.beginPath();
-      ctx.arc(px, py, p.r * 4, 0, Math.PI * 2);
+      ctx.arc(px, py, glow, 0, Math.PI * 2);
       ctx.fillStyle = grad;
       ctx.fill();
+
+      // Núcleo brillante central (solo en partículas medianas/grandes)
+      if (p.r > 7) {
+        const core = ctx.createRadialGradient(px, py, 0, px, py, p.r * 0.55);
+        core.addColorStop(0,   `rgba(255,255,255,${alpha * 0.45})`);
+        core.addColorStop(0.5, `rgba(${r},${g},${b},${alpha * 0.3})`);
+        core.addColorStop(1,   `rgba(${r},${g},${b},0)`);
+        ctx.beginPath();
+        ctx.arc(px, py, p.r * 0.55, 0, Math.PI * 2);
+        ctx.fillStyle = core;
+        ctx.fill();
+      }
     });
+
     requestAnimationFrame(drawFrame);
   }
+
   requestAnimationFrame(drawFrame);
 })();
 
@@ -1383,36 +1439,89 @@ document.getElementById('f-name').addEventListener('input', function() {
 });
 
 /* ════════════════════════════════════════════════════════════════
-   7. MUSIC TOGGLE (visual)
+   7. MUSIC — reproducción real con music.mp3
+   Archivos necesarios junto al HTML:
+     music.mp3   ← fuente principal (mejor compatibilidad)
+     music.aac   ← fallback opcional para Safari antiguo
 ════════════════════════════════════════════════════════════════ */
 (function initMusic() {
   const btn    = document.getElementById('music-btn');
+  const audio  = document.getElementById('bg-audio');
   const bars   = [1, 2, 3, 4, 5].map(i => document.getElementById('mb' + i));
+
+  // Animación del ecualizador cuando hay música
   const FRAMES = [
     [4, 11, 6, 13, 5],
-    [8,  4,13,  5, 10],
-    [5, 13, 7, 10,  4],
-    [12, 5,10,  7, 13],
-    [4, 10,13,  4, 11],
-    [9, 13, 5, 11,  7],
+    [8,  4, 13, 5, 10],
+    [5, 13,  7, 10, 4],
+    [12, 5, 10,  7, 13],
+    [4, 10, 13,  4, 11],
+    [9, 13,  5, 11,  7],
   ];
-  let on = false, timer = null, f = 0;
+  const IDLE = [4, 11, 6, 13, 5];
+  let eqTimer = null;
+  let eqFrame = 0;
 
-  btn.addEventListener('click', () => {
-    on = !on;
-    btn.classList.toggle('playing', on);
-    btn.setAttribute('aria-pressed', String(on));
+  function startEQ() {
+    eqTimer = setInterval(() => {
+      const fr = FRAMES[eqFrame % FRAMES.length];
+      bars.forEach((b, i) => b.style.height = fr[i] + 'px');
+      eqFrame++;
+    }, 145);
+  }
 
-    if (on) {
-      timer = setInterval(() => {
-        const fr = FRAMES[f % FRAMES.length];
-        bars.forEach((b, i) => b.style.height = fr[i] + 'px');
-        f++;
-      }, 145);
+  function stopEQ() {
+    clearInterval(eqTimer);
+    IDLE.forEach((h, i) => bars[i].style.height = h + 'px');
+  }
+
+  // Fade de volumen suave al entrar/salir
+  function fadeVolume(target, duration) {
+    const step  = 50;
+    const delta = (target - audio.volume) / (duration / step);
+    const id    = setInterval(() => {
+      audio.volume = Math.min(1, Math.max(0, audio.volume + delta));
+      if ((delta > 0 && audio.volume >= target) ||
+          (delta < 0 && audio.volume <= target)) {
+        audio.volume = target;
+        clearInterval(id);
+        if (target === 0) audio.pause();
+      }
+    }, step);
+  }
+
+  btn.addEventListener('click', async () => {
+    const playing = btn.getAttribute('aria-pressed') === 'true';
+
+    if (!playing) {
+      // Play
+      try {
+        audio.volume = 0;
+        await audio.play();
+        fadeVolume(0.65, 1800); // sube a 65% en 1.8s
+        startEQ();
+        btn.classList.add('playing');
+        btn.setAttribute('aria-pressed', 'true');
+        btn.setAttribute('aria-label', 'Pausar música');
+      } catch (err) {
+        // Autoplay blocked o archivo no encontrado
+        console.warn('Audio no disponible:', err.message);
+      }
     } else {
-      clearInterval(timer);
-      [4, 11, 6, 13, 5].forEach((h, i) => bars[i].style.height = h + 'px');
+      // Pause con fade out
+      fadeVolume(0, 1200);
+      stopEQ();
+      btn.classList.remove('playing');
+      btn.setAttribute('aria-pressed', 'false');
+      btn.setAttribute('aria-label', 'Reproducir música');
     }
+  });
+
+  // Si el audio termina (no debería con loop, pero por las dudas)
+  audio.addEventListener('ended', () => {
+    stopEQ();
+    btn.classList.remove('playing');
+    btn.setAttribute('aria-pressed', 'false');
   });
 })();
 

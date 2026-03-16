@@ -29,10 +29,10 @@
 <meta name="twitter:description" content="Una noche para celebrar sueños, recuerdos y nuevos comienzos."/>
 <meta name="twitter:image"       content="preview.jpg"/>
 
-<!-- Fonts: Cormorant Garamond + Beau Rivage (script) + DM Sans -->
+<!-- Fonts: Cormorant Garamond + Beau Rivage (script) + DM Sans + Italianno (countdown) -->
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Beau+Rivage&family=DM+Sans:wght@200;300;400;500&display=swap"/>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Beau+Rivage&family=DM+Sans:wght@200;300;400;500&family=Italianno&display=swap"/>
 
 <style>
 
@@ -76,6 +76,7 @@
   --f-display: 'Cormorant Garamond', Georgia, serif;
   --f-ui:      'DM Sans', system-ui, sans-serif;
   --f-script:  'Beau Rivage', cursive;
+  --f-countdown: 'Italianno', Georgia, serif;  /* números del countdown */
 
   /* --- Motion --- */
   --ease:   cubic-bezier(0.22, 1, 0.36, 1);
@@ -330,30 +331,29 @@ main { position: relative; z-index: 10 }
 }
 
 /* Scroll indicator */
+/* ── ESTILO: hero-scroll — indicador deslizar abajo del hero ── */
 .hero-scroll {
-  position: absolute; bottom: 36px; left: 50%;
+  position: absolute;
+  bottom: 18px; left: 50%;
   transform: translateX(-50%);
-  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
   opacity: 0;
   animation: fadeInDelay 1s ease 3.2s forwards;
 }
-.scroll-track {
-  width: 22px; height: 34px;
-  border: 1.5px solid var(--text-faint);
-  border-radius: 12px; position: relative; overflow: hidden;
+
+/* Dedo animado SVG */
+.swipe-finger {
+  width: 28px; height: 44px;
+  animation: fingerSwipe 2.2s ease-in-out infinite;
+  filter: drop-shadow(0 1px 3px rgba(184,144,46,.2));
 }
-.scroll-ball {
-  width: 4px; height: 6px;
-  background: var(--gold-mid);
-  border-radius: 2px;
-  position: absolute; top: 6px; left: 50%;
-  transform: translateX(-50%);
-  animation: scrollAnim 2.4s ease infinite;
-}
-@keyframes scrollAnim {
-  0%   { opacity: 1; top: 6px }
-  65%  { opacity: 0; top: 20px }
-  100% { opacity: 0; top: 6px }
+@keyframes fingerSwipe {
+  0%   { transform: translateY(0);    opacity: .7  }
+  30%  { transform: translateY(-8px); opacity: 1   }
+  65%  { transform: translateY(12px); opacity: .6  }
+  80%  { transform: translateY(12px); opacity: 0   }
+  81%  { transform: translateY(0);    opacity: 0   }
+  100% { transform: translateY(0);    opacity: .7  }
 }
 .scroll-label {
   font-size: .5rem; font-weight: 300;
@@ -419,12 +419,12 @@ main { position: relative; z-index: 10 }
 }
 .cd-box:hover { box-shadow: 0 1px 0 rgba(255,255,255,.9) inset, 0 14px 44px rgba(0,0,0,.14), 0 4px 12px rgba(184,144,46,.1) }
 
-/* Number inside box */
+/* ── ESTILO: cd-num — números del countdown (Italianno) ── */
 .cd-num {
-  font-family: var(--f-display);
-  font-size: clamp(1.9rem,5vw,3.8rem);
-  font-weight: 300;
-  letter-spacing: .01em;
+  font-family: var(--f-countdown);
+  font-size: clamp(2.4rem,6.5vw,5rem);
+  font-weight: 400;
+  letter-spacing: .04em;
   line-height: 1;
   color: var(--text-primary);
   font-variant-numeric: tabular-nums;
@@ -526,11 +526,11 @@ main { position: relative; z-index: 10 }
   text-shadow: var(--shadow-gold);
   margin-bottom: 8px;
 }
-/* ── ESTILO: card-name-block — bloque del nombre en el card (Martina sobre Coronel Guglielmone) ── */
+/* ── ESTILO: card-name-block — Martina centrada y ajustada al ancho de Coronel Guglielmone ── */
 .card-name-block {
-  display: inline-flex;
+  display: flex;
   flex-direction: column;
-  align-items: stretch;   /* ambas líneas al mismo ancho */
+  align-items: center;
   text-align: center;
   margin-bottom: 6px;
 }
@@ -543,22 +543,20 @@ main { position: relative; z-index: 10 }
   color: var(--text-primary);
   text-shadow: var(--shadow-text-sm);
   white-space: nowrap;
+  display: inline-block;
 }
+/* Martina: JS ajusta letter-spacing para igualar el ancho de .card-name-last */
 .card-name-first {
   font-family: var(--f-display);
   font-weight: 300;
-  letter-spacing: .22em;
   text-transform: uppercase;
   color: var(--text-primary);
   text-shadow: var(--shadow-text-sm);
-  /* Escala el font-size para que ocupe el mismo ancho que la línea de abajo */
   font-size: clamp(1.9rem,4vw,3rem);
-  line-height: 1.05;
-  width: 100%;
-  /* Ajuste fino: letter-spacing más amplio empuja el ancho visual */
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  line-height: 1.1;
+  display: inline-block;
+  white-space: nowrap;
+  letter-spacing: .22em; /* valor base — JS lo sobreescribe */
 }
 .card-subtitle {
   font-family: var(--f-display);
@@ -814,12 +812,22 @@ footer {
   text-shadow: var(--shadow-gold);
   opacity: .75;
 }
-/* ── ESTILO: footer-text — Mis Quince Años y fecha en el pie ── */
+/* ── ESTILO: footer-text — texto del pie ── */
 .footer-text {
   font-family: var(--f-ui);
-  font-size: .72rem; font-weight: 300;  /* era .58rem → ahora .72rem */
+  font-size: .72rem; font-weight: 300;
   letter-spacing: .38em; text-transform: uppercase;
-  color: var(--text-muted); line-height: 2.4;
+  color: var(--text-muted); line-height: 1;
+}
+.footer-title {
+  font-size: .82rem;        /* un poco más grande para el título */
+  color: var(--gold-mid);
+  margin-bottom: 12px;
+}
+.footer-date {
+  font-size: .64rem;
+  color: var(--text-faint);
+  margin-top: 4px;
 }
 
 /* Music toggle */
@@ -951,8 +959,16 @@ footer {
   </div>
 
   <div class="hero-scroll" aria-hidden="true">
-    <div class="scroll-track"><div class="scroll-ball"></div></div>
-    <span class="scroll-label">Scroll</span>
+    <!-- Dedo deslizando hacia arriba -->
+    <svg class="swipe-finger" viewBox="0 0 28 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Palma de la mano -->
+      <rect x="6" y="18" width="16" height="22" rx="6" fill="rgba(184,144,46,.18)" stroke="rgba(184,144,46,.55)" stroke-width="1.2"/>
+      <!-- Dedo índice extendido hacia arriba -->
+      <rect x="11" y="4" width="6" height="18" rx="3" fill="rgba(184,144,46,.28)" stroke="rgba(184,144,46,.65)" stroke-width="1.2"/>
+      <!-- Flecha arriba pequeña -->
+      <path d="M14 2 L11 6 M14 2 L17 6" stroke="rgba(184,144,46,.8)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <span class="scroll-label">Desliza</span>
   </div>
 
 </section>
@@ -1189,9 +1205,8 @@ footer {
      FOOTER
 ════════════════════════════════════════════ -->
 <footer>
-  <p class="footer-text">
-    Mis Quince Años &nbsp;·&nbsp; Sábado 23 de Mayo · 2026
-  </p>
+  <p class="footer-text footer-title">Mis Quince Años</p>
+  <p class="footer-text footer-date">Sábado 23 de Mayo · 2026</p>
 </footer>
 
 <!-- ════════════════════════════════════════════
@@ -1199,7 +1214,7 @@ footer {
      autoplay con muted para cumplir política de navegadores;
      se desmutea automáticamente al primer toque/click
 ════════════════════════════════════════════ -->
-<audio id="bg-audio" loop autoplay muted preload="auto">
+<audio id="bg-audio" loop autoplay muted preload="auto" playsinline>
   <source src="music.mp3" type="audio/mpeg"/>
   <source src="music.aac" type="audio/aac"/>
 </audio>
@@ -1434,6 +1449,46 @@ footer {
 })();
 
 /* ════════════════════════════════════════════════════════════════
+   2b. MATCH NAME WIDTH — ajusta letter-spacing de "Martina"
+   para que ocupe exactamente el mismo ancho que "Coronel Guglielmone"
+════════════════════════════════════════════════════════════════ */
+function matchNameWidth() {
+  const first = document.querySelector('.card-name-first');
+  const last  = document.querySelector('.card-name-last');
+  if (!first || !last) return;
+
+  // Ancho objetivo = ancho de "Coronel Guglielmone"
+  const targetW = last.getBoundingClientRect().width;
+  if (!targetW) return;
+
+  // Empezar desde letter-spacing 0 y subir hasta alcanzar el ancho
+  first.style.letterSpacing = '0em';
+  const baseW = first.getBoundingClientRect().width;
+  if (baseW <= 0) return;
+
+  // Caracteres visibles en "MARTINA" = 7
+  // El espacio extra total = targetW - baseW, repartido entre los chars
+  const charCount = first.textContent.trim().length;
+  const extraPx   = (targetW - baseW) / charCount;
+  const fs        = parseFloat(getComputedStyle(first).fontSize);
+  const extraEm   = extraPx / fs;
+
+  first.style.letterSpacing = Math.max(0, extraEm).toFixed(4) + 'em';
+}
+
+// Ejecutar cuando el DOM y las fuentes estén listas
+if (document.fonts && document.fonts.ready) {
+  document.fonts.ready.then(() => {
+    matchNameWidth();
+    window.addEventListener('resize', matchNameWidth, { passive: true });
+  });
+} else {
+  window.addEventListener('load', () => {
+    matchNameWidth();
+    window.addEventListener('resize', matchNameWidth, { passive: true });
+  });
+}
+/* ════════════════════════════════════════════════════════════════
    3. NAVIGATION SCROLL
 ════════════════════════════════════════════════════════════════ */
 window.addEventListener('scroll', () => {
@@ -1662,24 +1717,40 @@ document.getElementById('f-name').addEventListener('input', function() {
     on ? startEQ() : stopEQ();
   }
 
-  // ── Primer toque del usuario → desmutear y arrancar con fade ──
+  // ── Desbloqueo universal: primer gesto del usuario → música ──
+  // iOS/Android bloquean audio hasta interacción. Usamos pointerdown
+  // (captura toque, click y pen) y touchend para máxima compatibilidad.
   let unmuted = false;
-  function tryUnmute() {
+
+  async function tryUnmute() {
     if (unmuted) return;
     unmuted = true;
-    audio.muted = false;
+
+    // Unlock AudioContext si existe (necesario en algunos iOS)
+    try {
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      if (AudioCtx) {
+        const ctx = new AudioCtx();
+        await ctx.resume();
+      }
+    } catch {}
+
+    audio.muted  = false;
     audio.volume = 0;
-    audio.play().then(() => {
+
+    try {
+      await audio.play();
       fadeVolume(0.65, 1800);
       setPlaying(true);
-    }).catch(() => {});
-    // Remover listeners después del primer uso
-    document.removeEventListener('click',     tryUnmute);
-    document.removeEventListener('touchstart',tryUnmute);
-    document.removeEventListener('keydown',   tryUnmute);
+    } catch { unmuted = false }
+
+    // Limpiar todos los listeners
+    ['pointerdown','touchend','touchmove','scroll','click','keydown'].forEach(ev =>
+      document.removeEventListener(ev, tryUnmute)
+    );
   }
 
-  // Intentar autoplay directo (funciona si el navegador lo permite)
+  // Intentar autoplay directo (funciona en desktop y algunos móviles)
   audio.play().then(() => {
     audio.muted = false;
     audio.volume = 0;
@@ -1687,10 +1758,15 @@ document.getElementById('f-name').addEventListener('input', function() {
     setPlaying(true);
     unmuted = true;
   }).catch(() => {
-    // Bloqueado por política del navegador → esperar primer toque
-    document.addEventListener('click',      tryUnmute, { once: true });
-    document.addEventListener('touchstart', tryUnmute, { once: true, passive: true });
-    document.addEventListener('keydown',    tryUnmute, { once: true });
+    // Registrar múltiples tipos de evento para máxima cobertura en iOS/Android
+    // scroll y touchmove son los más fiables al deslizar en mobile
+    const opts = { once: true, passive: true };
+    document.addEventListener('pointerdown', tryUnmute, opts);
+    document.addEventListener('touchend',    tryUnmute, opts);
+    document.addEventListener('touchmove',   tryUnmute, opts);
+    document.addEventListener('scroll',      tryUnmute, opts);
+    document.addEventListener('click',       tryUnmute, { once: true });
+    document.addEventListener('keydown',     tryUnmute, { once: true });
   });
 
   // ── Botón de música — toggle manual ──

@@ -61,11 +61,9 @@
   --gold-pale:   #f0dba0;
   --gold-ghost:  rgba(184,144,46,.07);
 
-  /* --- Text shadows — más visibles --- */
-  --shadow-text-sm:  0 1px 3px rgba(0,0,0,.22), 0 2px 8px rgba(0,0,0,.12);
-  --shadow-text-md:  0 2px 6px rgba(0,0,0,.28), 0 4px 16px rgba(0,0,0,.15);
-  --shadow-text-lg:  0 2px 8px rgba(0,0,0,.35), 0 6px 24px rgba(0,0,0,.18);
-  --shadow-gold:     0 2px 10px rgba(184,144,46,.45), 0 4px 22px rgba(184,144,46,.25);
+  /* --- Text shadow unificada — 2px en todas las fuentes --- */
+  --shadow-text:  0 2px 6px rgba(0,0,0,.22);   /* una sola variable para todo */
+  --shadow-gold:  0 2px 10px rgba(184,144,46,.4);
 
   /* --- UI shadows --- */
   --shadow-card:     0 4px 6px rgba(0,0,0,.03), 0 16px 48px rgba(80,50,20,.08), 0 40px 80px rgba(80,50,20,.05);
@@ -167,7 +165,7 @@ img, svg { display: block }
   font-size: clamp(.95rem,1.5vw,1.1rem);
   font-weight: 400;
   color: var(--text-secondary);
-  text-shadow: var(--shadow-text-sm);
+  text-shadow: var(--shadow-text);
 }
 .nav-links { display: flex; gap: 32px; list-style: none }
 .nav-links a {
@@ -246,7 +244,7 @@ main { position: relative; z-index: 10 }
   letter-spacing: .56em;
   text-transform: uppercase;
   color: var(--gold-mid);
-  text-shadow: var(--shadow-text-sm);
+  text-shadow: var(--shadow-text);
   margin-bottom: 40px;
 }
 
@@ -255,7 +253,7 @@ main { position: relative; z-index: 10 }
   font-size: clamp(3rem,7vw,5.8rem);
   color: var(--gold);
   line-height: 1;
-  text-shadow: var(--shadow-gold), var(--shadow-text-md);
+  text-shadow: var(--shadow-gold), var(--shadow-text);
   margin-bottom: 6px;
 }
 
@@ -269,28 +267,37 @@ main { position: relative; z-index: 10 }
 }
 .hero-rule.expanded { width: clamp(120px,22vw,220px) }
 
-.hero-name-first {
-  display: block;
+/* ── ESTILO: name-block unificado — usado en hero Y en el card ──────────
+   .name-first = "Martina" (grande arriba, JS iguala ancho a .name-last)
+   .name-last  = "Coronel Guglielmone" (referencia de ancho)
+   ────────────────────────────────────────────────────────────────────── */
+.name-last {
   font-family: var(--f-display);
-  font-size: clamp(4rem,13vw,11rem);
-  font-weight: 300;
-  letter-spacing: .04em;
-  line-height: .93;
-  color: var(--text-primary);
-  text-transform: uppercase;
-  text-shadow: var(--shadow-text-lg), 0 4px 24px rgba(0,0,0,.06);
-}
-.hero-name-last {
-  display: block;
-  font-family: var(--f-display);
-  font-size: clamp(1.3rem,4vw,3.2rem);
   font-weight: 300;
   letter-spacing: .18em;
   color: var(--text-secondary);
   text-transform: uppercase;
-  margin-top: 10px;
-  text-shadow: var(--shadow-text-md);
+  text-shadow: var(--shadow-text);
+  white-space: nowrap;
+  display: block;
 }
+.name-first {
+  font-family: var(--f-display);
+  font-weight: 300;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  text-shadow: var(--shadow-text);
+  white-space: nowrap;
+  display: block;
+  letter-spacing: .04em; /* base — JS lo sobreescribe en ambos contextos */
+}
+
+/* Tamaños según contexto */
+#he-name .name-first  { font-size: clamp(4rem,13vw,11rem); line-height: .93 }
+#he-name .name-last   { font-size: clamp(1.3rem,4vw,3.2rem); margin-top: 10px; color: var(--text-secondary) }
+
+.card-name-block .name-first { font-size: clamp(1.9rem,4vw,3rem); line-height: 1.1 }
+.card-name-block .name-last  { font-size: clamp(.95rem,2vw,1.45rem); letter-spacing: .16em; color: var(--text-primary); font-weight: 400 }
 
 .hero-event {
   font-family: var(--f-display);
@@ -299,7 +306,7 @@ main { position: relative; z-index: 10 }
   font-weight: 400;
   color: var(--text-muted);
   margin-top: 28px;
-  text-shadow: var(--shadow-text-sm);
+  text-shadow: var(--shadow-text);
 }
 
 /* Date pill — single line */
@@ -432,7 +439,7 @@ main { position: relative; z-index: 10 }
   line-height: 1;
   color: var(--text-primary);
   font-variant-numeric: tabular-nums;
-  text-shadow: var(--shadow-text-md);
+  text-shadow: var(--shadow-text);
 }
 /* Single smooth breath: 1 → 0.08 → 1 — number barely dims,
    text swaps at the trough (42%), never fully disappears */
@@ -519,7 +526,7 @@ main { position: relative; z-index: 10 }
   font-size: .72rem; font-weight: 300;
   letter-spacing: .46em; text-transform: uppercase;
   color: var(--gold-mid);
-  text-shadow: var(--shadow-text-sm);
+  text-shadow: var(--shadow-text);
   margin-bottom: 14px;
 }
 .card-script {
@@ -530,37 +537,13 @@ main { position: relative; z-index: 10 }
   text-shadow: var(--shadow-gold);
   margin-bottom: 8px;
 }
-/* ── ESTILO: card-name-block — Martina centrada y ajustada al ancho de Coronel Guglielmone ── */
+/* card-name-block container */
 .card-name-block {
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
   margin-bottom: 6px;
-}
-.card-name-last {
-  font-family: var(--f-display);
-  font-size: clamp(.95rem,2vw,1.45rem);
-  font-weight: 400;
-  letter-spacing: .16em;
-  text-transform: uppercase;
-  color: var(--text-primary);
-  text-shadow: var(--shadow-text-sm);
-  white-space: nowrap;
-  display: inline-block;
-}
-/* Martina: JS ajusta letter-spacing para igualar el ancho de .card-name-last */
-.card-name-first {
-  font-family: var(--f-display);
-  font-weight: 300;
-  text-transform: uppercase;
-  color: var(--text-primary);
-  text-shadow: var(--shadow-text-sm);
-  font-size: clamp(1.9rem,4vw,3rem);
-  line-height: 1.1;
-  display: inline-block;
-  white-space: nowrap;
-  letter-spacing: .22em; /* valor base — JS lo sobreescribe */
 }
 .card-subtitle {
   font-family: var(--f-display);
@@ -639,7 +622,7 @@ main { position: relative; z-index: 10 }
   font-weight: 400;
   color: var(--text-primary);
   line-height: 1.15; letter-spacing: .01em;
-  text-shadow: var(--shadow-text-sm);
+  text-shadow: var(--shadow-text);
   white-space: nowrap;
 }
 .info-note {
@@ -662,7 +645,7 @@ main { position: relative; z-index: 10 }
   border-radius: 999px;
   position: relative; overflow: hidden;
   transition: transform .35s var(--spring), box-shadow .35s;
-  text-shadow: 0 1px 3px rgba(0,0,0,.18);
+  text-shadow: var(--shadow-text);
 }
 .btn-location::before {
   content: '';
@@ -700,7 +683,7 @@ main { position: relative; z-index: 10 }
   white-space: nowrap;
   color: var(--text-primary);
   margin-bottom: 20px;
-  text-shadow: var(--shadow-text-lg), 0 4px 20px rgba(0,0,0,.05);
+  text-shadow: var(--shadow-text);
 }
 .rsvp-sub {
   font-family: var(--f-display);
@@ -709,7 +692,7 @@ main { position: relative; z-index: 10 }
   color: var(--text-muted);
   line-height: 1.75;
   margin-bottom: 48px;
-  text-shadow: var(--shadow-text-sm);
+  text-shadow: var(--shadow-text);
 }
 
 /* Form */
@@ -754,7 +737,7 @@ textarea.form-field { height: 100px; resize: none; line-height: 1.65 }
   margin-top: 6px;
   position: relative; overflow: hidden;
   transition: transform .35s var(--spring), box-shadow .35s;
-  text-shadow: 0 1px 3px rgba(0,0,0,.2);
+  text-shadow: var(--shadow-text);
 }
 .form-submit::before {
   content: '';
@@ -793,7 +776,7 @@ textarea.form-field { height: 100px; resize: none; line-height: 1.65 }
   font-style: italic;
   font-size: 1.5rem; font-weight: 500;
   color: var(--text-primary);
-  text-shadow: var(--shadow-text-sm);
+  text-shadow: var(--shadow-text);
   margin-bottom: 10px;
 }
 .success-text { font-size: .9rem; font-weight: 300; color: var(--text-muted); line-height: 1.7 }
@@ -880,7 +863,7 @@ footer {
   letter-spacing: .48em; text-transform: uppercase;
   color: var(--gold-mid);
   text-align: center; margin-bottom: 28px;
-  text-shadow: var(--shadow-text-sm);
+  text-shadow: var(--shadow-text);
 }
 /* ── ESTILO: section-headline — título grande de sección ── */
 .section-headline {
@@ -890,7 +873,7 @@ footer {
   letter-spacing: .04em;
   color: var(--text-primary);
   text-align: center; margin-bottom: 16px;
-  text-shadow: var(--shadow-text-md), 0 4px 20px rgba(0,0,0,.04);
+  text-shadow: var(--shadow-text);
 }
 /* ── ESTILO: section-sub — subtítulo de sección ── */
 .section-sub {
@@ -899,7 +882,7 @@ footer {
   font-size: clamp(.95rem,1.8vw,1.2rem);
   color: var(--text-muted);
   text-align: center; margin-bottom: 56px;
-  text-shadow: var(--shadow-text-sm);
+  text-shadow: var(--shadow-text);
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -951,8 +934,8 @@ footer {
   <div class="hero-rule" id="he-rule" aria-hidden="true"></div>
 
   <div id="he-name">
-    <span class="hero-name-first">Martina</span>
-    <span class="hero-name-last">Coronel Guglielmone</span>
+    <span class="name-first">Martina</span>
+    <span class="name-last">Coronel Guglielmone</span>
   </div>
 
   <p class="hero-event" id="he-ev">Mis Quince Años</p>
@@ -1048,8 +1031,8 @@ footer {
 
       <!-- Name block: Martina stretches to match width of Coronel Guglielmone -->
       <div class="card-name-block">
-        <div class="card-name-first">Martina</div>
-        <div class="card-name-last">Coronel Guglielmone</div>
+        <div class="name-first">Martina</div>
+        <div class="name-last">Coronel Guglielmone</div>
       </div>
 
       <p class="card-subtitle">Te invita a ser parte de esta noche especial</p>
@@ -1448,28 +1431,28 @@ footer {
    2b. MATCH NAME WIDTH — ajusta letter-spacing de "Martina"
    para que ocupe exactamente el mismo ancho que "Coronel Guglielmone"
 ════════════════════════════════════════════════════════════════ */
+/* ════════════════════════════════════════════════════════════════
+   2b. MATCH NAME WIDTH — ajusta letter-spacing de cada .name-first
+   para que ocupe exactamente el mismo ancho que su .name-last hermano.
+   Funciona en hero Y en el card con las mismas clases unificadas.
+════════════════════════════════════════════════════════════════ */
 function matchNameWidth() {
-  const first = document.querySelector('.card-name-first');
-  const last  = document.querySelector('.card-name-last');
-  if (!first || !last) return;
+  document.querySelectorAll('.name-first').forEach(first => {
+    const last = first.nextElementSibling;
+    if (!last || !last.classList.contains('name-last')) return;
 
-  // Ancho objetivo = ancho de "Coronel Guglielmone"
-  const targetW = last.getBoundingClientRect().width;
-  if (!targetW) return;
+    const targetW = last.getBoundingClientRect().width;
+    if (!targetW) return;
 
-  // Empezar desde letter-spacing 0 y subir hasta alcanzar el ancho
-  first.style.letterSpacing = '0em';
-  const baseW = first.getBoundingClientRect().width;
-  if (baseW <= 0) return;
+    first.style.letterSpacing = '0em';
+    const baseW = first.getBoundingClientRect().width;
+    if (baseW <= 0 || baseW >= targetW) return;
 
-  // Caracteres visibles en "MARTINA" = 7
-  // El espacio extra total = targetW - baseW, repartido entre los chars
-  const charCount = first.textContent.trim().length;
-  const extraPx   = (targetW - baseW) / charCount;
-  const fs        = parseFloat(getComputedStyle(first).fontSize);
-  const extraEm   = extraPx / fs;
-
-  first.style.letterSpacing = Math.max(0, extraEm).toFixed(4) + 'em';
+    const charCount = first.textContent.trim().length;
+    const extraPx   = (targetW - baseW) / charCount;
+    const fs        = parseFloat(getComputedStyle(first).fontSize);
+    first.style.letterSpacing = Math.max(0, extraPx / fs).toFixed(4) + 'em';
+  });
 }
 
 // Ejecutar cuando el DOM y las fuentes estén listas

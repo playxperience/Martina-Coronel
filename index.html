@@ -1492,25 +1492,35 @@ window.addEventListener('scroll', () => {
 }, { passive: true });
 
 /* ════════════════════════════════════════════════════════════════
-   3b. BG PARALLAX — background-position-y, sin transform, sin glitch
-   La imagen se ancla en el centro y se desplaza suavemente
-   ajustando el porcentaje vertical del background-position.
+   3b. BG PARALLAX — solo en desktop, estático en móvil
+   En mobile el viewport height cambia con la barra del navegador
+   causando saltos. Solución: parallax solo en hover devices.
 ════════════════════════════════════════════════════════════════ */
 (function bgParallax() {
-  const bg      = document.getElementById('bg');
-  const maxH    = () => document.documentElement.scrollHeight - window.innerHeight;
-  let   current = 50; // posición Y inicial: 50% = centro
-  let   target  = 50;
+  const bg = document.getElementById('bg');
+
+  // Solo activar en dispositivos con mouse (desktop)
+  // En touch (mobile/tablet) dejar la imagen estática
+  const isTouch = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+
+  if (isTouch) {
+    // Móvil: imagen fija centrada, sin ningún movimiento
+    bg.style.backgroundPosition = 'center 50%';
+    return;
+  }
+
+  // Desktop: parallax suave con background-position-y
+  let current = 50;
+  let target  = 50;
 
   window.addEventListener('scroll', () => {
-    const h = maxH();
+    const h = document.documentElement.scrollHeight - window.innerHeight;
     if (h <= 0) return;
-    // Mapear scroll 0→100% a posición vertical 40%→60% (rango suave de 20%)
     target = 40 + (window.scrollY / h) * 20;
   }, { passive: true });
 
   function loop() {
-    current += (target - current) * 0.05; // lerp suave
+    current += (target - current) * 0.05;
     bg.style.backgroundPosition = `center ${current.toFixed(2)}%`;
     requestAnimationFrame(loop);
   }

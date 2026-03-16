@@ -103,19 +103,15 @@ img, svg { display: block }
 
 /* ═══════════════════════════════════════════════════════════════
    BACKGROUND — bg.jpg en la misma carpeta
-   Sin background-attachment:fixed (causa glitch en iOS/mobile).
-   El parallax se hace vía JS translateY para fluidez total.
+   Parallax via background-position-y (sin transform, sin glitch)
 ═══════════════════════════════════════════════════════════════ */
 #bg {
   position: fixed; inset: 0; z-index: 0;
   background-color: #f2ead8;
   background-image: var(--bg-photo);
   background-size: cover;
-  background-position: center center;
-  /* Escalar ligeramente para que el parallax tenga rango sin mostrar bordes */
-  transform: scale(1.12) translateY(0px);
-  will-change: transform;
-  transition: none;
+  background-position: center 50%;
+  will-change: background-position;
 }
 /* Overlay liviano — foto bien visible */
 #bg::after {
@@ -1496,28 +1492,26 @@ window.addEventListener('scroll', () => {
 }, { passive: true });
 
 /* ════════════════════════════════════════════════════════════════
-   3b. BG PARALLAX — desplazamiento suave sin glitch
-   La imagen se mueve más despacio que el scroll (factor 0.25).
-   scale(1.12) garantiza que nunca se vean bordes blancos.
+   3b. BG PARALLAX — background-position-y, sin transform, sin glitch
+   La imagen se ancla en el centro y se desplaza suavemente
+   ajustando el porcentaje vertical del background-position.
 ════════════════════════════════════════════════════════════════ */
 (function bgParallax() {
-  const bg     = document.getElementById('bg');
-  let   current = 0;
-  let   target  = 0;
+  const bg      = document.getElementById('bg');
+  const maxH    = () => document.documentElement.scrollHeight - window.innerHeight;
+  let   current = 50; // posición Y inicial: 50% = centro
+  let   target  = 50;
 
   window.addEventListener('scroll', () => {
-    target = window.scrollY;
+    const h = maxH();
+    if (h <= 0) return;
+    // Mapear scroll 0→100% a posición vertical 40%→60% (rango suave de 20%)
+    target = 40 + (window.scrollY / h) * 20;
   }, { passive: true });
 
   function loop() {
-    // Lerp suave — 6% por frame hacia el target
-    current += (target - current) * 0.06;
-
-    // Mover la imagen hacia arriba a medida que se baja (parallax inverso)
-    // Factor 0.25 = imagen se mueve 25% de la velocidad del scroll
-    const offset = current * 0.25;
-    bg.style.transform = `scale(1.12) translateY(${-offset * 0.88}px)`;
-
+    current += (target - current) * 0.05; // lerp suave
+    bg.style.backgroundPosition = `center ${current.toFixed(2)}%`;
     requestAnimationFrame(loop);
   }
   requestAnimationFrame(loop);

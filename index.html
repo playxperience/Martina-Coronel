@@ -111,16 +111,11 @@ img, svg { display: block }
   background-position: center 50%;
   will-change: background-position;
 }
-/* Overlay liviano — foto bien visible */
+/* Overlay radial — centro transparente, bordes sepia cálido */
 #bg::after {
   content: '';
   position: absolute; inset: 0;
-  background: linear-gradient(
-    to bottom,
-    rgba(248,245,238,.32) 0%,
-    rgba(248,245,238,.22) 40%,
-    rgba(248,245,238,.32) 100%
-  );
+  background: radial-gradient(ellipse at center, transparent 30%, rgba(180,140,90,.28) 100%);
 }
 
 /* Paper grain texture */
@@ -322,13 +317,7 @@ main { position: relative; z-index: 10 }
   text-shadow: var(--shadow-text);
 }
 
-/* Viñeteado del hero — profundidad cinematográfica */
-#hero::before {
-  content: '';
-  position: absolute; inset: 0;
-  background: radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,.18) 100%);
-  pointer-events: none; z-index: 0;
-}
+/* sin vignette en hero — el parallax ya da profundidad suficiente */
 .hero-date {
   display: inline-flex;
   align-items: center;
@@ -1118,6 +1107,8 @@ footer {
 
       <!-- RSVP Form -->
       <form class="rsvp-form" id="rsvpForm" data-reveal data-d="3" novalidate>
+        <!-- Honeypot anti-spam: oculto para humanos, bots lo llenan -->
+        <input type="text" name="website" id="f-hp" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;opacity:0;height:0;width:0;pointer-events:none"/>
 
         <!-- Fila: Nombre + Apellido -->
         <div class="form-row">
@@ -1642,6 +1633,7 @@ const GF_FIELDS = {
   invitados: 'entry.1775120857',  // ✅ Asistentes
   mensaje:   'entry.1641365860',  // ✅ Mensaje
 };
+const rsvpLoadTime = Date.now(); // Para detectar bots por velocidad de envío
 
 document.getElementById('rsvpForm').addEventListener('submit', async function(e) {
   e.preventDefault();
@@ -1673,6 +1665,11 @@ document.getElementById('rsvpForm').addEventListener('submit', async function(e)
   btnTxt.textContent = 'Enviando...';
 
   try {
+    // Anti-spam: honeypot (bots llenan campos ocultos)
+    if (document.getElementById('f-hp').value) return;
+    // Anti-spam: timestamp (envío en menos de 2s = bot)
+    if (Date.now() - rsvpLoadTime < 2000) return;
+
     const body = new URLSearchParams();
     body.append(GF_FIELDS.nombre,    name);
     body.append(GF_FIELDS.apellido,  apellido);
@@ -1929,7 +1926,7 @@ function addToCalendar() {
     );
     // Aplicar degradado de fallback elegante
     document.getElementById('bg').style.background =
-      'linear-gradient(160deg, #f5ece0 0%, #ede3d2 35%, #e8dcc8 65%, #f0e8d8 100%)';
+      'radial-gradient(ellipse at center, #e8d9c0 0%, #c4a87a 100%)';
   };
   probe.src = 'bg.jpg';
 })();

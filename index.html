@@ -115,7 +115,7 @@ img, svg { display: block }
 #bg::after {
   content: '';
   position: absolute; inset: 0;
-  background: radial-gradient(ellipse at center, rgb(129 72 0 / 15%), rgb(129 72 0 / 55%));
+  background: radial-gradient(ellipse 80% 80% at center, rgb(129 72 0 / 5%) 0%, rgb(129 72 0 / 25%) 100%);
 }
 
 /* Paper grain texture */
@@ -1242,35 +1242,83 @@ footer {
   resize();
   addEventListener('resize', resize, { passive: true });
 
-  // Orbes nebulosas — más visibles y más rápidas
   const orbs = [
-    { x:.15, y:.20, r:560, col:[255,218,170], op:.55, a:0,    da:.000060, dx:.000040, dy:.000032 },
-    { x:.78, y:.30, r:500, col:[240,195,215], op:.48, a:1.2,  da:.000050, dx:-.000035,dy:.000045 },
-    { x:.50, y:.70, r:440, col:[205,195,245], op:.44, a:2.4,  da:.000042, dx:.000045, dy:-.000040 },
-    { x:.82, y:.78, r:420, col:[190,225,200], op:.42, a:3.6,  da:.000055, dx:-.000042,dy:-.000035 },
-    { x:.25, y:.55, r:380, col:[255,232,185], op:.52, a:4.8,  da:.000065, dx:.000035, dy:.000055 },
-  ];
+    { x:.15, y:.20, r:520, col:[255,218,170], baseOp:.42 },
+    { x:.78, y:.30, r:460, col:[240,195,215], baseOp:.36 },
+    { x:.50, y:.70, r:400, col:[205,195,245], baseOp:.32 },
+    { x:.82, y:.78, r:380, col:[190,225,200], baseOp:.30 },
+    { x:.25, y:.55, r:350, col:[255,232,185], baseOp:.40 },
+  ].map(o => ({
+    ...o,
+    // posición actual en px (se inicializa en primer frame)
+    px: 0, py: 0,
+    // velocidad base muy lenta
+    vx: (Math.random() - .5) * 0.12,
+    vy: (Math.random() - .5) * 0.10,
+    // temporizador para cambio suave de dirección (luciérnaga)
+    nextTurn: 80 + Math.random() * 120,
+    turnTimer: 0,
+    // destello
+    twinkleT: Math.random() * Math.PI * 2,
+    twinkleSpeed: 0.008 + Math.random() * 0.012,
+    twinkleMag: 0.0,          // magnitud actual del destello
+    twinkleNext: 60 + Math.random() * 200,
+    twinkleTimer: 0,
+    twinkleActive: false,
+    initialized: false,
+  }));
 
   function draw() {
     ctx.clearRect(0, 0, W, H);
     orbs.forEach(o => {
-      o.a  += o.da;
-      o.x  += o.dx;
-      o.y  += o.dy;
-      if (o.x < -.1 || o.x > 1.1) o.dx *= -1;
-      if (o.y < -.1 || o.y > 1.1) o.dy *= -1;
+      // Inicializar posición real en px la primera vez
+      if (!o.initialized) { o.px = o.x * W; o.py = o.y * H; o.initialized = true; }
 
-      const px = (o.x + Math.sin(o.a) * .07) * W;
-      const py = (o.y + Math.cos(o.a * .7) * .06) * H;
+      // Movimiento suave — deriva lenta
+      o.px += o.vx;
+      o.py += o.vy;
+
+      // Cambio de dirección gradual tipo luciérnaga
+      o.turnTimer++;
+      if (o.turnTimer >= o.nextTurn) {
+        o.turnTimer = 0;
+        o.nextTurn  = 80 + Math.random() * 160;
+        const angle = Math.random() * Math.PI * 2;
+        const speed = 0.06 + Math.random() * 0.10;
+        o.vx = Math.cos(angle) * speed;
+        o.vy = Math.sin(angle) * speed;
+      }
+
+      // Rebotar en bordes suavemente
+      if (o.px < -o.r * .3) o.vx = Math.abs(o.vx);
+      if (o.px > W + o.r * .3) o.vx = -Math.abs(o.vx);
+      if (o.py < -o.r * .3) o.vy = Math.abs(o.vy);
+      if (o.py > H + o.r * .3) o.vy = -Math.abs(o.vy);
+
+      // Destello aleatorio tipo luciérnaga
+      o.twinkleTimer++;
+      if (!o.twinkleActive && o.twinkleTimer >= o.twinkleNext) {
+        o.twinkleActive = true;
+        o.twinkleT      = 0;
+        o.twinkleTimer  = 0;
+        o.twinkleNext   = 120 + Math.random() * 300;
+        o.twinkleMag    = 0.25 + Math.random() * 0.35;
+      }
+      let extra = 0;
+      if (o.twinkleActive) {
+        o.twinkleT += 0.06;
+        extra = o.twinkleMag * Math.sin(o.twinkleT) * Math.exp(-o.twinkleT * 0.4);
+        if (o.twinkleT > Math.PI * 2) o.twinkleActive = false;
+      }
+
+      const op = Math.max(0, Math.min(1, o.baseOp + extra));
       const [r, g, b] = o.col;
-
-      const gr = ctx.createRadialGradient(px, py, 0, px, py, o.r);
-      gr.addColorStop(0,    `rgba(${r},${g},${b},${o.op})`);
-      gr.addColorStop(0.45, `rgba(${r},${g},${b},${o.op * .45})`);
+      const gr = ctx.createRadialGradient(o.px, o.py, 0, o.px, o.py, o.r);
+      gr.addColorStop(0,    `rgba(${r},${g},${b},${op})`);
+      gr.addColorStop(0.45, `rgba(${r},${g},${b},${op * .4})`);
       gr.addColorStop(1,    `rgba(${r},${g},${b},0)`);
-
       ctx.beginPath();
-      ctx.arc(px, py, o.r, 0, Math.PI * 2);
+      ctx.arc(o.px, o.py, o.r, 0, Math.PI * 2);
       ctx.fillStyle = gr;
       ctx.fill();
     });
@@ -1280,7 +1328,8 @@ footer {
 })();
 
 /* ════════════════════════════════════════════════════════════════
-   1b. PARTÍCULAS — más rápidas, más visibles, reactivas al scroll
+   1b. PARTÍCULAS — luciérnagas: deriva independiente, giros suaves,
+       destellos aleatorios
 ════════════════════════════════════════════════════════════════ */
 (function initParticles() {
   const canvas = document.getElementById('particles-canvas');
@@ -1291,118 +1340,122 @@ footer {
   resize();
   addEventListener('resize', resize, { passive: true });
 
-  // Velocidad de scroll — se actualiza en tiempo real
-  let scrollVel = 0;      // velocidad instantánea (+= al bajar, -= al subir)
-  let lastScrollY = window.scrollY;
-  let scrollDir   = 0;    // -1 sube, 0 quieto, +1 baja
-
-  window.addEventListener('scroll', () => {
-    const dy    = window.scrollY - lastScrollY;
-    scrollVel   = dy * 0.0008;   // más fuerte que antes
-    scrollDir   = dy > 0 ? 1 : dy < 0 ? -1 : 0;
-    lastScrollY = window.scrollY;
-    clearTimeout(scrollVel._t);
-    scrollVel._t = setTimeout(() => { scrollVel = 0; scrollDir = 0; }, 150);
-  }, { passive: true });
-
   const PALETTE = [
-    { r: 255, g: 210, b: 180 },
-    { r: 235, g: 195, b: 230 },
-    { r: 195, g: 225, b: 210 },
-    { r: 255, g: 230, b: 180 },
-    { r: 210, g: 220, b: 255 },
-    { r: 255, g: 215, b: 215 },
-    { r: 210, g: 240, b: 235 },
+    { r:255, g:220, b:160 }, // dorado cálido
+    { r:255, g:240, b:190 }, // amarillo pálido
+    { r:240, g:210, b:255 }, // lavanda
+    { r:195, g:240, b:215 }, // verde agua
+    { r:255, g:225, b:200 }, // melocotón
+    { r:220, g:235, b:255 }, // azul hielo
+    { r:255, g:210, b:230 }, // rosa
   ];
 
   const isMobile = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
-  const COUNT    = isMobile ? 25 : 65;
+  const COUNT    = isMobile ? 22 : 55;
 
   const particles = Array.from({ length: COUNT }, (_, i) => {
     const col   = PALETTE[i % PALETTE.length];
-    const large = i < 10;
-
+    const large = i < 8;
+    const speed = large ? 0.18 + Math.random() * 0.14 : 0.35 + Math.random() * 0.55;
+    const angle = Math.random() * Math.PI * 2;
     return {
-      x:    Math.random(),
-      y:    Math.random(),
-      r:    large ? 22 + Math.random() * 24 : 4 + Math.random() * 9,
-
-      // Base speeds — más rápidas y visibles
-      vyBase: large
-                ? 0.000030 + Math.random() * 0.000035
-                : 0.00042  + Math.random() * 0.00060,
-      vxBase: large
-                ? (Math.random() - .5) * 0.000028
-                : (Math.random() - .5) * 0.00024,
-
-      ph:   Math.random() * Math.PI * 2,
-      fr:   large
-              ? 0.00030 + Math.random() * 0.00040
-              : 0.0028  + Math.random() * 0.0045,
-      swing: large
-              ? 18 + Math.random() * 28
-              : 32 + Math.random() * 44,
-      op:   large
-              ? 0.28 + Math.random() * 0.30
-              : 0.65 + Math.random() * 0.35,
-      breathFreq: large
-              ? 0.0004 + Math.random() * 0.0005
-              : 0.0010 + Math.random() * 0.0018,
-      breathPh: Math.random() * Math.PI * 2,
-      col,
-      large,
+      // posición en px (se fija en primer frame)
+      px: Math.random() * (typeof W !== 'undefined' ? W : 1000),
+      py: Math.random() * (typeof H !== 'undefined' ? H : 800),
+      r:  large ? 18 + Math.random() * 20 : 3 + Math.random() * 7,
+      vx: Math.cos(angle) * speed,
+      vy: Math.sin(angle) * speed,
+      speed,
+      // temporizador de giro (luciérnaga)
+      nextTurn:  40 + Math.random() * 100,
+      turnTimer: Math.random() * 80,
+      // oscilación lateral suave (no reactiva a scroll)
+      swingPh: Math.random() * Math.PI * 2,
+      swingFr: 0.008 + Math.random() * 0.012,
+      swingAmp: large ? 8 + Math.random() * 14 : 12 + Math.random() * 22,
+      // destello luciérnaga
+      baseOp: large ? 0.30 + Math.random() * 0.25 : 0.55 + Math.random() * 0.35,
+      twinkleActive: false,
+      twinkleT: 0,
+      twinkleMag: 0,
+      twinkleNext: 30 + Math.floor(Math.random() * 180),
+      twinkleTimer: 0,
+      col, large,
     };
   });
 
   function drawFrame() {
     ctx.clearRect(0, 0, W, H);
 
-    // scrollVel: positivo = bajando página, negativo = subiendo
-
     particles.forEach(p => {
-      // scroll abajo (+) → suben más rápido
-      // scroll arriba (-) → bajan (invierten dirección momentáneamente)
-      const boost = scrollVel * (p.large ? 0.5 : 1.2);
-      const vy = p.vyBase + boost;
+      // Deriva libre
+      p.px += p.vx;
+      p.py += p.vy;
+      p.swingPh += p.swingFr;
 
-      p.y        -= vy;
-      p.x        += p.vxBase + scrollVel * (p.large ? 0.15 : 0.35) * (p.x > .5 ? 1 : -1);
-      p.ph       += p.fr;
-      p.breathPh += p.breathFreq;
+      // Giro suave aleatorio — cambia dirección gradualmente
+      p.turnTimer++;
+      if (p.turnTimer >= p.nextTurn) {
+        p.turnTimer = 0;
+        p.nextTurn  = 40 + Math.random() * 120;
+        // Girar entre -60° y +60° desde la dirección actual
+        const turn  = (Math.random() - .5) * Math.PI * 0.7;
+        const curA  = Math.atan2(p.vy, p.vx);
+        const newA  = curA + turn;
+        p.vx = Math.cos(newA) * p.speed;
+        p.vy = Math.sin(newA) * p.speed;
+      }
 
-      if (p.y < -0.06) { p.y = 1.06; p.x = Math.random() }
-      if (p.y >  1.06) { p.y = -0.06; p.x = Math.random() } // por si scroll las empuja abajo
-      if (p.x < -0.06) p.x = 1.06;
-      if (p.x >  1.06) p.x = -0.06;
+      // Rebotar en bordes con cambio de dirección natural
+      if (p.px < 0)  { p.px = 0;  p.vx =  Math.abs(p.vx) }
+      if (p.px > W)  { p.px = W;  p.vx = -Math.abs(p.vx) }
+      if (p.py < 0)  { p.py = 0;  p.vy =  Math.abs(p.vy) }
+      if (p.py > H)  { p.py = H;  p.vy = -Math.abs(p.vy) }
 
-      const px = p.x * W + Math.sin(p.ph) * p.swing;
-      const py = p.y * H + Math.cos(p.ph * 0.55) * (p.swing * 0.35);
+      // Destello aleatorio — encendido y apagado suave
+      p.twinkleTimer++;
+      if (!p.twinkleActive && p.twinkleTimer >= p.twinkleNext) {
+        p.twinkleActive = true;
+        p.twinkleT      = 0;
+        p.twinkleTimer  = 0;
+        p.twinkleNext   = 60 + Math.floor(Math.random() * 220);
+        p.twinkleMag    = 0.3 + Math.random() * 0.5;
+      }
+      let extra = 0;
+      if (p.twinkleActive) {
+        p.twinkleT += 0.07;
+        // Curva de destello: sube rápido, baja lento
+        extra = p.twinkleMag * Math.sin(p.twinkleT) * Math.exp(-p.twinkleT * 0.35);
+        if (p.twinkleT > Math.PI * 2.2) p.twinkleActive = false;
+      }
+      const alpha = Math.max(0.04, Math.min(1, p.baseOp + extra));
 
-      const breath = 0.68 + 0.32 * Math.sin(p.breathPh);
-      const alpha  = p.op * breath;
+      // Posición con oscilación lateral suave
+      const drawX = p.px + Math.sin(p.swingPh) * p.swingAmp;
+      const drawY = p.py + Math.cos(p.swingPh * .6) * (p.swingAmp * .4);
+
       const { r, g, b } = p.col;
+      const glow = p.r * (p.large ? 3.2 : 4.2);
 
-      const glowMult = p.large ? 3.0 : 4.0;
-      const glow = p.r * glowMult;
-      const grad = ctx.createRadialGradient(px, py, 0, px, py, glow);
+      // Halo exterior
+      const grad = ctx.createRadialGradient(drawX, drawY, 0, drawX, drawY, glow);
       grad.addColorStop(0,    `rgba(${r},${g},${b},${alpha})`);
-      grad.addColorStop(0.30, `rgba(${r},${g},${b},${alpha * 0.60})`);
-      grad.addColorStop(0.65, `rgba(${r},${g},${b},${alpha * 0.20})`);
+      grad.addColorStop(0.30, `rgba(${r},${g},${b},${alpha * .55})`);
+      grad.addColorStop(0.65, `rgba(${r},${g},${b},${alpha * .18})`);
       grad.addColorStop(1,    `rgba(${r},${g},${b},0)`);
-
       ctx.beginPath();
-      ctx.arc(px, py, glow, 0, Math.PI * 2);
+      ctx.arc(drawX, drawY, glow, 0, Math.PI * 2);
       ctx.fillStyle = grad;
       ctx.fill();
 
-      // Núcleo blanco
-      const coreR = p.r * (!p.large ? 0.6 : 0.5);
-      const core  = ctx.createRadialGradient(px, py, 0, px, py, coreR);
-      core.addColorStop(0,   `rgba(255,255,255,${alpha * (!p.large ? 0.75 : 0.4)})`);
-      core.addColorStop(0.5, `rgba(${r},${g},${b},${alpha * 0.4})`);
+      // Núcleo brillante
+      const coreR = p.r * (p.large ? 0.45 : 0.6);
+      const core  = ctx.createRadialGradient(drawX, drawY, 0, drawX, drawY, coreR);
+      core.addColorStop(0,   `rgba(255,255,255,${alpha * (p.large ? .45 : .80)})`);
+      core.addColorStop(0.5, `rgba(${r},${g},${b},${alpha * .4})`);
       core.addColorStop(1,   `rgba(${r},${g},${b},0)`);
       ctx.beginPath();
-      ctx.arc(px, py, coreR, 0, Math.PI * 2);
+      ctx.arc(drawX, drawY, coreR, 0, Math.PI * 2);
       ctx.fillStyle = core;
       ctx.fill();
     });

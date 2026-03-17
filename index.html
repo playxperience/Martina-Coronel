@@ -111,11 +111,11 @@ img, svg { display: block }
   background-position: center 50%;
   will-change: background-position;
 }
-/* Overlay radial — centro transparente, bordes sepia cálido */
+/* Overlay radial sepia — transparente al centro, sepia cálido en bordes */
 #bg::after {
   content: '';
   position: absolute; inset: 0;
-  background: radial-gradient(ellipse at center, transparent 30%, rgba(180,140,90,.28) 100%);
+  background: radial-gradient(ellipse at center, rgb(129 72 0 / 15%), rgb(129 72 0 / 55%));
 }
 
 /* Paper grain texture */
@@ -1242,13 +1242,13 @@ footer {
   resize();
   addEventListener('resize', resize, { passive: true });
 
-  // Orbes nebulosas — tonos cálidos que complementan el fondo
+  // Orbes nebulosas — más visibles y más rápidas
   const orbs = [
-    { x:.15, y:.20, r:480, col:[255,218,170], op:.22, a:0,    da:.000028, dx:.000018, dy:.000015 },
-    { x:.78, y:.30, r:420, col:[240,195,215], op:.18, a:1.2,  da:.000022, dx:-.000015,dy:.000020 },
-    { x:.50, y:.70, r:360, col:[205,195,245], op:.15, a:2.4,  da:.000018, dx:.000020, dy:-.000018 },
-    { x:.82, y:.78, r:340, col:[190,225,200], op:.14, a:3.6,  da:.000025, dx:-.000020,dy:-.000015 },
-    { x:.25, y:.55, r:300, col:[255,232,185], op:.20, a:4.8,  da:.000030, dx:.000015, dy:.000025 },
+    { x:.15, y:.20, r:560, col:[255,218,170], op:.55, a:0,    da:.000060, dx:.000040, dy:.000032 },
+    { x:.78, y:.30, r:500, col:[240,195,215], op:.48, a:1.2,  da:.000050, dx:-.000035,dy:.000045 },
+    { x:.50, y:.70, r:440, col:[205,195,245], op:.44, a:2.4,  da:.000042, dx:.000045, dy:-.000040 },
+    { x:.82, y:.78, r:420, col:[190,225,200], op:.42, a:3.6,  da:.000055, dx:-.000042,dy:-.000035 },
+    { x:.25, y:.55, r:380, col:[255,232,185], op:.52, a:4.8,  da:.000065, dx:.000035, dy:.000055 },
   ];
 
   function draw() {
@@ -1257,12 +1257,11 @@ footer {
       o.a  += o.da;
       o.x  += o.dx;
       o.y  += o.dy;
-      // Bounce gently inside viewport
       if (o.x < -.1 || o.x > 1.1) o.dx *= -1;
       if (o.y < -.1 || o.y > 1.1) o.dy *= -1;
 
-      const px = (o.x + Math.sin(o.a) * .06) * W;
-      const py = (o.y + Math.cos(o.a * .7) * .05) * H;
+      const px = (o.x + Math.sin(o.a) * .07) * W;
+      const py = (o.y + Math.cos(o.a * .7) * .06) * H;
       const [r, g, b] = o.col;
 
       const gr = ctx.createRadialGradient(px, py, 0, px, py, o.r);
@@ -1281,9 +1280,7 @@ footer {
 })();
 
 /* ════════════════════════════════════════════════════════════════
-   1b. PARTÍCULAS — orbes pastel iluminados con desplazamiento visible
-   Partículas pequeñas más rápidas y opacas para verlas bien.
-   Partículas grandes lentas para profundidad.
+   1b. PARTÍCULAS — más rápidas, más visibles, reactivas al scroll
 ════════════════════════════════════════════════════════════════ */
 (function initParticles() {
   const canvas = document.getElementById('particles-canvas');
@@ -1294,86 +1291,98 @@ footer {
   resize();
   addEventListener('resize', resize, { passive: true });
 
+  // Velocidad de scroll — se actualiza en tiempo real
+  let scrollVel = 0;      // velocidad instantánea (+= al bajar, -= al subir)
+  let lastScrollY = window.scrollY;
+  let scrollDir   = 0;    // -1 sube, 0 quieto, +1 baja
+
+  window.addEventListener('scroll', () => {
+    const dy    = window.scrollY - lastScrollY;
+    scrollVel   = dy * 0.0008;   // más fuerte que antes
+    scrollDir   = dy > 0 ? 1 : dy < 0 ? -1 : 0;
+    lastScrollY = window.scrollY;
+    clearTimeout(scrollVel._t);
+    scrollVel._t = setTimeout(() => { scrollVel = 0; scrollDir = 0; }, 150);
+  }, { passive: true });
+
   const PALETTE = [
-    { r: 255, g: 210, b: 180 },  // melocotón cálido
-    { r: 235, g: 195, b: 230 },  // lila suave
-    { r: 195, g: 225, b: 210 },  // menta sage
-    { r: 255, g: 230, b: 180 },  // oro pálido
-    { r: 210, g: 220, b: 255 },  // lavanda
-    { r: 255, g: 215, b: 215 },  // rosa polvo
-    { r: 210, g: 240, b: 235 },  // turquesa pálido
+    { r: 255, g: 210, b: 180 },
+    { r: 235, g: 195, b: 230 },
+    { r: 195, g: 225, b: 210 },
+    { r: 255, g: 230, b: 180 },
+    { r: 210, g: 220, b: 255 },
+    { r: 255, g: 215, b: 215 },
+    { r: 210, g: 240, b: 235 },
   ];
 
-  const isMobile  = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
-  const COUNT     = isMobile ? 25 : 65;
+  const isMobile = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+  const COUNT    = isMobile ? 25 : 65;
+
   const particles = Array.from({ length: COUNT }, (_, i) => {
     const col   = PALETTE[i % PALETTE.length];
-    const large = i < 10;   // 10 orbes grandes lentas
-    const small = i >= 10;  // 55 partículas pequeñas más rápidas
+    const large = i < 10;
 
     return {
       x:    Math.random(),
       y:    Math.random(),
+      r:    large ? 22 + Math.random() * 24 : 4 + Math.random() * 9,
 
-      // Tamaños — pequeñas un poco más grandes para verlas mejor
-      r:    large ? 20 + Math.random() * 22 : 3 + Math.random() * 8,
-
-      // Velocidad — pequeñas más rápidas (3-4x más que antes)
-      vy:   large
-              ? 0.000008 + Math.random() * 0.000012    // grandes: muy lentas
-              : 0.00012  + Math.random() * 0.00022,    // pequeñas: notablemente más rápidas
-
-      // Desplazamiento lateral — pequeñas con más swing
-      vx:   large
-              ? (Math.random() - .5) * 0.000010
-              : (Math.random() - .5) * 0.000080,       // más movimiento horizontal
+      // Base speeds — más rápidas y visibles
+      vyBase: large
+                ? 0.000030 + Math.random() * 0.000035
+                : 0.00042  + Math.random() * 0.00060,
+      vxBase: large
+                ? (Math.random() - .5) * 0.000028
+                : (Math.random() - .5) * 0.00024,
 
       ph:   Math.random() * Math.PI * 2,
       fr:   large
-              ? 0.00014 + Math.random() * 0.00022
-              : 0.0012  + Math.random() * 0.0022,      // oscilación lateral más frecuente
-
+              ? 0.00030 + Math.random() * 0.00040
+              : 0.0028  + Math.random() * 0.0045,
       swing: large
-              ? 10 + Math.random() * 18
-              : 22 + Math.random() * 32,               // meneo lateral más amplio y visible
-
-      // Opacidad — pequeñas más opacas para que se vean bien
+              ? 18 + Math.random() * 28
+              : 32 + Math.random() * 44,
       op:   large
-              ? 0.10 + Math.random() * 0.16
-              : 0.45 + Math.random() * 0.40,           // era 0.22–0.57, ahora 0.45–0.85
-
+              ? 0.28 + Math.random() * 0.30
+              : 0.65 + Math.random() * 0.35,
       breathFreq: large
-              ? 0.0003 + Math.random() * 0.0004
-              : 0.0008 + Math.random() * 0.0015,
-      breathPh:   Math.random() * Math.PI * 2,
+              ? 0.0004 + Math.random() * 0.0005
+              : 0.0010 + Math.random() * 0.0018,
+      breathPh: Math.random() * Math.PI * 2,
       col,
-      small,
+      large,
     };
   });
 
   function drawFrame() {
     ctx.clearRect(0, 0, W, H);
 
+    // scrollVel: positivo = bajando página, negativo = subiendo
+
     particles.forEach(p => {
-      p.y        -= p.vy;
-      p.x        += p.vx;
+      // scroll abajo (+) → suben más rápido
+      // scroll arriba (-) → bajan (invierten dirección momentáneamente)
+      const boost = scrollVel * (p.large ? 0.5 : 1.2);
+      const vy = p.vyBase + boost;
+
+      p.y        -= vy;
+      p.x        += p.vxBase + scrollVel * (p.large ? 0.15 : 0.35) * (p.x > .5 ? 1 : -1);
       p.ph       += p.fr;
       p.breathPh += p.breathFreq;
 
       if (p.y < -0.06) { p.y = 1.06; p.x = Math.random() }
+      if (p.y >  1.06) { p.y = -0.06; p.x = Math.random() } // por si scroll las empuja abajo
       if (p.x < -0.06) p.x = 1.06;
       if (p.x >  1.06) p.x = -0.06;
 
-      // Trayectoria sinusoidal — swing más visible en pequeñas
       const px = p.x * W + Math.sin(p.ph) * p.swing;
-      const py = p.y * H  + Math.cos(p.ph * 0.55) * (p.swing * 0.35);
+      const py = p.y * H + Math.cos(p.ph * 0.55) * (p.swing * 0.35);
 
       const breath = 0.68 + 0.32 * Math.sin(p.breathPh);
       const alpha  = p.op * breath;
       const { r, g, b } = p.col;
 
-      // Halo radial — pequeñas con halo más definido
-      const glowMult = p.small ? 3.8 : 3.0;
+      const glowMult = p.large ? 3.0 : 4.0;
       const glow = p.r * glowMult;
       const grad = ctx.createRadialGradient(px, py, 0, px, py, glow);
       grad.addColorStop(0,    `rgba(${r},${g},${b},${alpha})`);
@@ -1386,10 +1395,10 @@ footer {
       ctx.fillStyle = grad;
       ctx.fill();
 
-      // Núcleo blanco brillante — en todas para que destaquen
-      const coreR = p.r * (p.small ? 0.6 : 0.5);
+      // Núcleo blanco
+      const coreR = p.r * (!p.large ? 0.6 : 0.5);
       const core  = ctx.createRadialGradient(px, py, 0, px, py, coreR);
-      core.addColorStop(0,   `rgba(255,255,255,${alpha * (p.small ? 0.7 : 0.4)})`);
+      core.addColorStop(0,   `rgba(255,255,255,${alpha * (!p.large ? 0.75 : 0.4)})`);
       core.addColorStop(0.5, `rgba(${r},${g},${b},${alpha * 0.4})`);
       core.addColorStop(1,   `rgba(${r},${g},${b},0)`);
       ctx.beginPath();

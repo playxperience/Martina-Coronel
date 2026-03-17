@@ -209,20 +209,31 @@ main { position: relative; z-index: 10 }
 }
 .section-inner { max-width: 1020px; margin: 0 auto }
 
-/* ── ESTILO: ornament — decoración de línea dorada con diamante ── */
+/* ── ESTILO: section-ornament — línea dorada decorativa bajo títulos de sección ── */
+/* Generada por CSS pseudo-element en .section-overline, sin HTML extra */
+.section-overline::after {
+  content: '';
+  display: block;
+  width: 0;
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(184,144,46,.5), transparent);
+  margin: 20px auto 0;
+  transition: width 1.2s var(--ease);
+}
+.section-overline.revealed::after { width: 220px; }
+
+/* .ornament se mantiene solo para uso dentro del card de detalles */
 .ornament {
   display: flex; align-items: center; gap: 16px;
-  max-width: 260px; margin: 0 auto;  /* era 220px → 260px */
+  max-width: 240px; margin: 28px auto;
 }
 .ornament-line { flex: 1; height: 1px; background: linear-gradient(to right,transparent,rgba(184,144,46,.4),transparent) }
-.ornament-gem  { width: 7px; height: 7px; border: 1px solid var(--gold-mid); transform: rotate(45deg); flex-shrink: 0 }  /* era 5px → 7px */
-.ornament-dot  { width: 4px; height: 4px; border-radius: 50%; background: var(--gold-mid); flex-shrink: 0 }  /* era 3px → 4px */
+.ornament-gem  { width: 7px; height: 7px; border: 1px solid var(--gold-mid); transform: rotate(45deg); flex-shrink: 0 }
+.ornament-dot  { width: 4px; height: 4px; border-radius: 50%; background: var(--gold-mid); flex-shrink: 0 }
 
-/* Thin section divider */
-.divider {
-  max-width: 960px; margin: 0 auto;
-  height: 1px;
-  background: linear-gradient(to right,transparent,rgba(184,144,46,.12),transparent);
+/* Section separators — CSS only, no extra DOM elements */
+#countdown, #details, #rsvp {
+  border-top: 1px solid rgba(184,144,46,.1);
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -294,10 +305,12 @@ main { position: relative; z-index: 10 }
 
 /* Tamaños según contexto */
 #he-name .name-first  { font-size: clamp(4rem,13vw,11rem); line-height: .93 }
-#he-name .name-last   { font-size: clamp(1.3rem,4vw,3.2rem); margin-top: 10px; color: var(--text-secondary) }
+#he-name .name-last   { font-size: clamp(1.3rem,4vw,3.2rem); margin-top: 10px }
 
+/* Card: misma jerarquía de colores que el hero, tamaño reducido */
 .card-name-block .name-first { font-size: clamp(1.9rem,4vw,3rem); line-height: 1.1 }
-.card-name-block .name-last  { font-size: clamp(.95rem,2vw,1.45rem); letter-spacing: .16em; color: var(--text-primary); font-weight: 400 }
+.card-name-block .name-last  { font-size: clamp(.95rem,2vw,1.45rem); letter-spacing: .16em }
+/* name-first = ink-1 (oscuro), name-last = text-secondary (más claro) — igual que hero */
 
 .hero-event {
   font-family: var(--f-display);
@@ -309,7 +322,13 @@ main { position: relative; z-index: 10 }
   text-shadow: var(--shadow-text);
 }
 
-/* Date pill — single line */
+/* Viñeteado del hero — profundidad cinematográfica */
+#hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,.18) 100%);
+  pointer-events: none; z-index: 0;
+}
 .hero-date {
   display: inline-flex;
   align-items: center;
@@ -697,6 +716,8 @@ main { position: relative; z-index: 10 }
 
 /* Form */
 .rsvp-form { display: flex; flex-direction: column; gap: 14px; text-align: left }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px }
+@media(max-width:480px) { .form-row { grid-template-columns: 1fr } }
 
 .form-label {
   display: block;
@@ -952,7 +973,6 @@ footer {
 
 </section>
 
-<div class="divider"></div>
 
 <!-- ─────────────────────────────────────────
      COUNTDOWN
@@ -961,16 +981,6 @@ footer {
   <div class="section-inner">
 
     <p class="section-overline" data-reveal>Cuenta regresiva</p>
-
-    <div class="ornament" style="margin-bottom:52px" data-reveal data-d="1">
-      <div class="ornament-line"></div>
-      <div style="display:flex;align-items:center;gap:6px">
-        <div class="ornament-dot"></div>
-        <div class="ornament-gem"></div>
-        <div class="ornament-dot"></div>
-      </div>
-      <div class="ornament-line"></div>
-    </div>
 
     <!-- Expired message -->
     <p class="cd-done" id="cd-done" role="status">✦ Hoy es el gran día ✦</p>
@@ -1002,7 +1012,6 @@ footer {
   </div>
 </section>
 
-<div class="divider"></div>
 
 <!-- ─────────────────────────────────────────
      EVENT DETAILS
@@ -1013,16 +1022,6 @@ footer {
     <p class="section-overline" data-reveal>Los detalles</p>
     <h2 class="section-headline" data-reveal data-d="1">Una noche especial</h2>
     <p class="section-sub" data-reveal data-d="2">Todo preparado para recibirte</p>
-
-    <div class="ornament" style="margin-bottom:52px" data-reveal data-d="2">
-      <div class="ornament-line"></div>
-      <div style="display:flex;align-items:center;gap:6px">
-        <div class="ornament-dot"></div>
-        <div class="ornament-gem"></div>
-        <div class="ornament-dot"></div>
-      </div>
-      <div class="ornament-line"></div>
-    </div>
 
     <div class="details-card" data-reveal data-d="3">
       <!-- Card header -->
@@ -1102,7 +1101,6 @@ footer {
   </div>
 </section>
 
-<div class="divider"></div>
 
 <!-- ─────────────────────────────────────────
      RSVP
@@ -1119,41 +1117,67 @@ footer {
       </p>
 
       <!-- RSVP Form -->
-      <!-- To connect: replace action with Formspree URL or your endpoint -->
       <form class="rsvp-form" id="rsvpForm" data-reveal data-d="3" novalidate>
 
-        <div>
-          <label class="form-label" for="f-name">Nombre completo</label>
-          <input  type="text"
-                  class="form-field"
-                  id="f-name"
-                  name="nombre"
-                  placeholder="Tu nombre"
-                  autocomplete="name"
-                  required/>
+        <!-- Fila: Nombre + Apellido -->
+        <div class="form-row">
+          <div>
+            <label class="form-label" for="f-name">Nombre</label>
+            <input  type="text"
+                    class="form-field"
+                    id="f-name"
+                    name="nombre"
+                    placeholder="Tu nombre"
+                    autocomplete="given-name"
+                    required/>
+          </div>
+          <div>
+            <label class="form-label" for="f-apellido">Apellido</label>
+            <input  type="text"
+                    class="form-field"
+                    id="f-apellido"
+                    name="apellido"
+                    placeholder="Tu apellido"
+                    autocomplete="family-name"
+                    required/>
+          </div>
+        </div>
+
+        <!-- Fila: Teléfono + Asistentes -->
+        <div class="form-row">
+          <div>
+            <label class="form-label" for="f-phone">Teléfono</label>
+            <input  type="tel"
+                    class="form-field"
+                    id="f-phone"
+                    name="telefono"
+                    placeholder="Ej: 0961222333"
+                    autocomplete="tel"
+                    required/>
+          </div>
+          <div>
+            <label class="form-label" for="f-guests">Asistentes</label>
+            <select class="form-field"
+                    id="f-guests"
+                    name="invitados"
+                    style="background-color:rgba(255,252,245,.7)"
+                    required>
+              <option value="">Seleccionar</option>
+              <option value="1">1 persona</option>
+              <option value="2">2 personas</option>
+              <option value="3">3 personas</option>
+              <option value="4">4 personas</option>
+              <option value="5">5 personas</option>
+            </select>
+          </div>
         </div>
 
         <div>
-          <label class="form-label" for="f-guests">Cantidad de invitados</label>
-          <select class="form-field"
-                  id="f-guests"
-                  name="invitados"
-                  style="background-color:rgba(255,252,245,.7)">
-            <option value="">Seleccionar</option>
-            <option value="1">Solo yo — 1 persona</option>
-            <option value="2">2 personas</option>
-            <option value="3">3 personas</option>
-            <option value="4">4 personas</option>
-            <option value="5">5 o más personas</option>
-          </select>
-        </div>
-
-        <div>
-          <label class="form-label" for="f-msg">Mensaje para Martina</label>
+          <label class="form-label" for="f-msg">Mensaje para Martina <span style="font-weight:300;opacity:.7">(opcional)</span></label>
           <textarea class="form-field"
                     id="f-msg"
                     name="mensaje"
-                    placeholder="Un mensaje especial... (opcional)"></textarea>
+                    placeholder="Un mensaje especial..."></textarea>
         </div>
 
         <button type="submit" class="form-submit" id="f-submit">
@@ -1289,7 +1313,9 @@ footer {
     { r: 210, g: 240, b: 235 },  // turquesa pálido
   ];
 
-  const particles = Array.from({ length: 65 }, (_, i) => {
+  const isMobile  = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+  const COUNT     = isMobile ? 25 : 65;
+  const particles = Array.from({ length: COUNT }, (_, i) => {
     const col   = PALETTE[i % PALETTE.length];
     const large = i < 10;   // 10 orbes grandes lentas
     const small = i >= 10;  // 55 partículas pequeñas más rápidas
@@ -1606,32 +1632,40 @@ setInterval(updateCountdown, 1000);
    3. En la URL verás: entry.XXXXXXXXX=tuvalor
    ────────────────────────────────────────────────────────────── */
 
-// ID del formulario (extraído de tu iframe)
+// ID del formulario
 const GF_BASE = 'https://docs.google.com/forms/d/e/1FAIpQLScDzkfzvYt9x7ofqzF-jc1xsM64rMPMtoXQddxPmBE56pHnyQ/formResponse';
 
-// ⚠️ REEMPLAZÁ estos IDs con los de TU formulario
-// (seguí los pasos de arriba para obtenerlos)
 const GF_FIELDS = {
-  nombre:    'entry.000000001',   // ← reemplazá con tu entry ID del campo nombre
-  invitados: 'entry.000000002',   // ← reemplazá con tu entry ID del campo invitados
-  mensaje:   'entry.000000003',   // ← reemplazá con tu entry ID del campo mensaje
+  nombre:    'entry.890593818',   // ✅ Nombre
+  apellido:  'entry.367520278',   // ✅ Apellido
+  telefono:  'entry.138363375',   // ✅ Teléfono
+  invitados: 'entry.1775120857',  // ✅ Asistentes
+  mensaje:   'entry.1641365860',  // ✅ Mensaje
 };
 
 document.getElementById('rsvpForm').addEventListener('submit', async function(e) {
   e.preventDefault();
 
-  const name    = document.getElementById('f-name').value.trim();
-  const guests  = document.getElementById('f-guests').value;
-  const message = document.getElementById('f-msg').value.trim();
-  const btn     = document.getElementById('f-submit');
-  const btnTxt  = document.getElementById('f-btn-text');
+  const name     = document.getElementById('f-name').value.trim();
+  const apellido = document.getElementById('f-apellido').value.trim();
+  const phone    = document.getElementById('f-phone').value.trim();
+  const guests   = document.getElementById('f-guests').value;
+  const message  = document.getElementById('f-msg').value.trim();
+  const btn      = document.getElementById('f-submit');
+  const btnTxt   = document.getElementById('f-btn-text');
 
-  // Validación
-  if (!name) {
-    const f = document.getElementById('f-name');
-    f.style.borderColor = 'rgba(184,144,46,.7)';
-    f.style.boxShadow   = '0 0 0 3px rgba(184,144,46,.12)';
-    f.focus();
+  // Validación mínima
+  const requiredFields = [
+    { el: document.getElementById('f-name'),     val: name },
+    { el: document.getElementById('f-apellido'), val: apellido },
+    { el: document.getElementById('f-phone'),    val: phone },
+    { el: document.getElementById('f-guests'),   val: guests },
+  ];
+  const invalid = requiredFields.find(f => !f.val);
+  if (invalid) {
+    invalid.el.style.borderColor = 'rgba(184,144,46,.7)';
+    invalid.el.style.boxShadow   = '0 0 0 3px rgba(184,144,46,.12)';
+    invalid.el.focus();
     return;
   }
 
@@ -1639,14 +1673,15 @@ document.getElementById('rsvpForm').addEventListener('submit', async function(e)
   btnTxt.textContent = 'Enviando...';
 
   try {
-    // Construir FormData con los entry IDs de Google Forms
     const body = new URLSearchParams();
     body.append(GF_FIELDS.nombre,    name);
-    body.append(GF_FIELDS.invitados, guests || 'No especificado');
-    body.append(GF_FIELDS.mensaje,   message || '');
+    body.append(GF_FIELDS.apellido,  apellido);
+    body.append(GF_FIELDS.telefono,  phone);
+    body.append(GF_FIELDS.invitados, guests);
+    if (GF_FIELDS.mensaje !== 'entry.PENDIENTE') {
+      body.append(GF_FIELDS.mensaje, message || '');
+    }
 
-    // no-cors: Google Forms no admite CORS, pero los datos llegan igual.
-    // No podemos leer la respuesta (opaque), pero el envío sí funciona.
     await fetch(GF_BASE, {
       method: 'POST',
       mode:   'no-cors',
@@ -1654,18 +1689,13 @@ document.getElementById('rsvpForm').addEventListener('submit', async function(e)
       body:   body.toString(),
     });
 
-    // Con no-cors siempre llegamos acá (incluso si hay error).
-    // Google Forms guarda el dato correctamente si los entry IDs son correctos.
     document.getElementById('rsvpForm').style.display = 'none';
     document.getElementById('formSuccess').classList.add('show');
 
   } catch (err) {
-    // Sólo falla si no hay conexión — fallback a WhatsApp
-    let txt = `¡Hola Martina! 🌸\n\nSoy *${name}*`;
-    txt += guests
-      ? ` y confirmo asistencia con *${guests} persona${parseInt(guests) > 1 ? 's' : ''}*`
-      : ` y confirmo mi asistencia`;
-    txt += ` a tus Quince Años.\n📅 *Sábado 23 de Mayo 2026 · 20:00 hs*`;
+    // Fallback WhatsApp si no hay conexión
+    let txt = `¡Hola Martina! 🌸\n\nSoy *${name} ${apellido}* y confirmo asistencia con *${guests || '1'} persona${parseInt(guests) > 1 ? 's' : ''}*`;
+    txt += ` a tus Quince Años.\n📅 *Sábado 23 de Mayo 2026 · 20:00 hs*\n📱 ${phone}`;
     if (message) txt += `\n\n💌 ${message}`;
     window.open(`https://wa.me/?text=${encodeURIComponent(txt)}`, '_blank', 'noopener');
 

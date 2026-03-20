@@ -323,32 +323,29 @@ main { position: relative; z-index: 10 }
 }
 
 /* sin vignette en hero — el parallax ya da profundidad suficiente */
-.hero-date {
+/* ── ESTILO: hero-info-bar — fila de info con separadores tipo barra ── */
+.hero-info-bar {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  margin-top: 36px;
-  padding: 11px 28px;
-  border: 1px solid rgba(184,144,46,.22);
-  border-radius: 999px;
-  background: rgba(255,252,245,.65);
-  backdrop-filter: blur(10px);
+  gap: 0;
+  margin-top: 22px;
 }
-.hero-date-dot {
-  width: 5px; height: 5px;
-  border-radius: 50%; background: var(--gold-mid);
-  flex-shrink: 0;
-  opacity: .7;
-}
-/* ── ESTILO: hero-date-text — fecha bajo el hero ── */
-.hero-date-text {
+.hero-info-item {
   font-family: var(--f-ui);
-  font-size: clamp(.75rem,1.1vw,.9rem);  /* era .6–.72rem → ahora .75–.9rem */
+  font-size: clamp(.72rem, 1vw, .85rem);
   font-weight: 300;
   letter-spacing: .32em;
   text-transform: uppercase;
   color: var(--text-secondary);
+  text-shadow: var(--shadow-text);
   white-space: nowrap;
+  padding: 0 18px;
+}
+.hero-info-sep {
+  width: 1px;
+  height: 14px;
+  background: linear-gradient(to bottom, transparent, rgba(184,144,46,.5), transparent);
+  flex-shrink: 0;
 }
 
 /* Scroll indicator */
@@ -907,8 +904,7 @@ footer {
    RESPONSIVE
 ═══════════════════════════════════════════════════════════════ */
 @media(max-width:480px) {
-  .hero-date { padding: 10px 18px }
-  .hero-date-text { letter-spacing: .18em }
+  .hero-info-item { padding: 0 12px; letter-spacing: .20em }
 }
 
 </style>
@@ -956,11 +952,22 @@ footer {
     <span class="name-last">Coronel Guglielmone</span>
   </div>
 
-  <p class="hero-event" id="he-ev">Mis Quince Años</p>
+  <div class="ornament" style="margin:20px auto 0" aria-hidden="true">
+    <div class="ornament-line"></div>
+    <div style="display:flex;align-items:center;gap:6px">
+      <div class="ornament-dot"></div>
+      <div class="ornament-gem"></div>
+      <div class="ornament-dot"></div>
+    </div>
+    <div class="ornament-line"></div>
+  </div>
 
-  <div class="hero-date" id="he-dt" aria-label="Sábado 23 de Mayo 2026 a las 20:00 hs">
-    <span class="hero-date-dot" aria-hidden="true"></span>
-    <span class="hero-date-text">Sábado &nbsp;·&nbsp; 23 de Mayo 2026 &nbsp;·&nbsp; 20:00 hs</span>
+  <div class="hero-info-bar" id="he-dt" aria-label="Sábado 23 de Mayo 2026, La Rivière">
+    <span class="hero-info-item">Sábado</span>
+    <span class="hero-info-sep" aria-hidden="true"></span>
+    <span class="hero-info-item">Mayo 23</span>
+    <span class="hero-info-sep" aria-hidden="true"></span>
+    <span class="hero-info-item">La Rivière</span>
   </div>
 
   <div class="hero-scroll" aria-hidden="true">
@@ -1478,8 +1485,7 @@ footer {
     { id: 'he-sc',   delay: 600  },
     { id: 'he-rule', delay: 900  },   // expands via class
     { id: 'he-name', delay: 1050 },
-    { id: 'he-ev',   delay: 1300 },
-    { id: 'he-dt',   delay: 1550 },
+    { id: 'he-dt',   delay: 1300 },
   ];
 
   // Set initial invisible state

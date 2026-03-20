@@ -296,7 +296,7 @@ main { position: relative; z-index: 10 }
   font-family: var(--f-display);
   font-weight: 300;
   text-transform: uppercase;
-  color: var(--text-primary);
+  color: var(--text-secondary);
   text-shadow: var(--shadow-text);
   white-space: nowrap;
   display: block;
@@ -310,17 +310,6 @@ main { position: relative; z-index: 10 }
 /* Card: misma jerarquía de colores que el hero, tamaño reducido */
 .card-name-block .name-first { font-size: clamp(1.9rem,4vw,3rem); line-height: 1.1 }
 .card-name-block .name-last  { font-size: clamp(.95rem,2vw,1.45rem); letter-spacing: .16em }
-/* name-first = ink-1 (oscuro), name-last = text-secondary (más claro) — igual que hero */
-
-.hero-event {
-  font-family: var(--f-display);
-  font-style: italic;
-  font-size: clamp(1rem,2.4vw,1.7rem);
-  font-weight: 400;
-  color: var(--text-muted);
-  margin-top: 28px;
-  text-shadow: var(--shadow-text);
-}
 
 /* sin vignette en hero — el parallax ya da profundidad suficiente */
 /* ── ESTILO: hero-info-bar — fila de info con separadores tipo barra ── */
@@ -328,22 +317,22 @@ main { position: relative; z-index: 10 }
   display: inline-flex;
   align-items: center;
   gap: 0;
-  margin-top: 22px;
+  margin-top: 48px;
 }
 .hero-info-item {
   font-family: var(--f-ui);
-  font-size: clamp(.72rem, 1vw, .85rem);
+  font-size: clamp(1rem, 1.5vw, 1.2rem);
   font-weight: 300;
-  letter-spacing: .32em;
+  letter-spacing: .22em;
   text-transform: uppercase;
   color: var(--text-secondary);
   text-shadow: var(--shadow-text);
   white-space: nowrap;
-  padding: 0 18px;
+  padding: 0 22px;
 }
 .hero-info-sep {
   width: 1px;
-  height: 14px;
+  height: 16px;
   background: linear-gradient(to bottom, transparent, rgba(184,144,46,.5), transparent);
   flex-shrink: 0;
 }
@@ -952,7 +941,7 @@ footer {
     <span class="name-last">Coronel Guglielmone</span>
   </div>
 
-  <div class="ornament" style="margin:20px auto 0" aria-hidden="true">
+  <div class="ornament" style="margin:36px auto 0" aria-hidden="true">
     <div class="ornament-line"></div>
     <div style="display:flex;align-items:center;gap:6px">
       <div class="ornament-dot"></div>

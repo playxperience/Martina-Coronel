@@ -29,7 +29,7 @@
 <meta name="twitter:description" content="Una noche para celebrar sueños, recuerdos y nuevos comienzos."/>
 <meta name="twitter:image"       content="preview.jpg"/>
 
-<!-- Fonts: Cormorant Garamond + Beau Rivage (script) + DM Sans + Italianno (countdown) -->
+<!-- Fonts: Cormorant Garamond + Beau Rivage + DM Sans + Italianno -->
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Beau+Rivage&family=DM+Sans:wght@200;300;400;500&family=Italianno&display=swap"/>
@@ -41,7 +41,6 @@
 ═══════════════════════════════════════════════════════════════ */
 :root {
   /* --- Surfaces --- */
-  --page:          #faf7f0;
   --surface:       #f3ede0;
   --card-bg:       rgba(255, 252, 245, 0.78);
   --card-solid:    #fffcf5;
@@ -58,7 +57,6 @@
   --gold:        #b8902e;
   --gold-mid:    #cc9e38; 
   --gold-light:  #e0bc68;
-  --gold-pale:   #f0dba0;
   --gold-ghost:  rgba(184,144,46,.07);
 
   /* --- Text shadow unificada — 2px en todas las fuentes --- */
@@ -74,7 +72,7 @@
   --f-display: 'Cormorant Garamond', Georgia, serif;
   --f-ui:      'DM Sans', system-ui, sans-serif;
   --f-script:  'Beau Rivage', cursive;
-  --f-countdown: 'Italianno', Georgia, serif;  /* números del countdown */
+  --f-countdown: 'Italianno', Georgia, serif;
 
   /* --- Motion --- */
   --ease:   cubic-bezier(0.22, 1, 0.36, 1);
@@ -248,16 +246,6 @@ main { position: relative; z-index: 10 }
   position: relative;
 }
 
-.hero-eyebrow {
-  font-family: var(--f-ui);
-  font-size: clamp(.58rem,.85vw,.7rem);
-  font-weight: 300;
-  letter-spacing: .32em;
-  text-transform: uppercase;
-  color: var(--gold-mid);
-  text-shadow: var(--shadow-text);
-  margin-bottom: 40px;
-}
 
 .hero-script {
   font-family: var(--f-script);
@@ -298,18 +286,29 @@ main { position: relative; z-index: 10 }
   text-transform: uppercase;
   color: var(--text-secondary);
   text-shadow: var(--shadow-text);
-  white-space: nowrap;
   display: block;
-  letter-spacing: .04em; /* base — JS lo sobreescribe en ambos contextos */
+  letter-spacing: .04em; /* base — JS lo sobreescribe en card */
 }
 
 /* Tamaños según contexto */
 #he-name .name-first  { font-size: clamp(4rem,13vw,11rem); line-height: .93 }
-#he-name .name-last   { font-size: clamp(1.3rem,4vw,3.2rem); margin-top: 10px }
+#he-name .name-last   {
+  font-size: clamp(1.3rem,4vw,3.2rem); margin-top: 10px;
+  text-align-last: justify;
+  text-justify: inter-character;
+  /* sin white-space:nowrap — el flex stretch + justify-last distribuye las letras */
+}
 
-/* Card: misma jerarquía de colores que el hero, tamaño reducido */
-.card-name-block .name-first { font-size: clamp(1.9rem,4vw,3rem); line-height: 1.1 }
-.card-name-block .name-last  { font-size: clamp(.95rem,2vw,1.45rem); letter-spacing: .16em }
+/* El contenedor del hero: ancho = ancho de MARTINA (el hijo más ancho) */
+#he-name {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+/* Card: JS ajusta letter-spacing del nombre al ancho del apellido */
+.card-name-block .name-first { font-size: clamp(1.9rem,4vw,3rem); line-height: 1.1; white-space: nowrap }
+.card-name-block .name-last  { font-size: clamp(.95rem,2vw,1.45rem); white-space: nowrap }
 
 /* sin vignette en hero — el parallax ya da profundidad suficiente */
 /* ── ESTILO: hero-info-bar — fila de info con separadores tipo barra ── */
@@ -429,7 +428,7 @@ main { position: relative; z-index: 10 }
 }
 .cd-box:hover { box-shadow: 0 1px 0 rgba(255,255,255,.9) inset, 0 14px 44px rgba(0,0,0,.14), 0 4px 12px rgba(184,144,46,.1) }
 
-/* ── ESTILO: cd-num — números del countdown (Italianno) ── */
+/* ── ESTILO: cd-num — números del countdown (Cormorant Garamond) ── */
 .cd-num {
   font-family: var(--f-countdown);
   font-size: clamp(2.4rem,6.5vw,5rem);
@@ -526,14 +525,6 @@ main { position: relative; z-index: 10 }
   color: var(--gold-mid);
   text-shadow: var(--shadow-text);
   margin-bottom: 14px;
-}
-.card-script {
-  font-family: var(--f-script);
-  font-size: clamp(2.2rem,5vw,3.6rem);
-  color: var(--gold);
-  line-height: 1;
-  text-shadow: var(--shadow-gold);
-  margin-bottom: 8px;
 }
 /* card-name-block container */
 .card-name-block {
@@ -720,29 +711,23 @@ select.form-field { appearance: none; cursor: pointer; background-color: rgba(25
 textarea.form-field { height: 100px; resize: none; line-height: 1.65 }
 
 .form-submit {
-  width: 100%; padding: 16px;
-  background: linear-gradient(135deg, var(--gold-dark), var(--gold), var(--gold-light));
-  color: #fff;
+  width: 100%; padding: 12px 28px;
+  background: transparent;
+  color: var(--gold);
   font-family: var(--f-ui);
-  font-size: .7rem; font-weight: 400;
+  font-size: .72rem; font-weight: 400;
   letter-spacing: .24em; text-transform: uppercase;
+  border: 1px solid rgba(184,144,46,.32);
   border-radius: 999px;
   margin-top: 6px;
-  position: relative; overflow: hidden;
-  transition: transform .35s var(--spring), box-shadow .35s;
-  text-shadow: var(--shadow-text);
+  transition: background .3s, border-color .3s, transform .3s var(--spring), box-shadow .3s;
 }
-.form-submit::before {
-  content: '';
-  position: absolute; inset: 0;
-  background: linear-gradient(135deg, var(--gold), var(--gold-light));
-  opacity: 0; transition: opacity .35s;
+.form-submit:hover {
+  background: var(--gold-ghost); border-color: var(--gold-mid);
+  transform: translateY(-2px) scale(1.02); box-shadow: 0 4px 18px rgba(184,144,46,.16);
 }
-.form-submit span { position: relative; z-index: 1 }
-.form-submit:hover { transform: translateY(-2px); box-shadow: var(--shadow-btn) }
-.form-submit:hover::before { opacity: 1 }
 .form-submit:active { transform: scale(.98) }
-.form-submit:disabled { opacity: .55; cursor: not-allowed; transform: none }
+.form-submit:disabled { opacity: .45; cursor: not-allowed; transform: none }
 
 /* Success message */
 .form-success {
@@ -782,15 +767,6 @@ footer {
   text-align: center;
   border-top: 1px solid rgba(184,144,46,.1);
   position: relative; z-index: 10;
-}
-/* ── ESTILO: footer-script — nombre en script en el pie ── */
-.footer-script {
-  font-family: var(--f-script);
-  font-size: 3.2rem;          /* era 1.9rem → ahora 3.2rem */
-  color: var(--gold);
-  margin-bottom: 10px; line-height: 1;
-  text-shadow: var(--shadow-gold);
-  opacity: .75;
 }
 /* ── ESTILO: footer-text — texto del pie ── */
 .footer-text {
@@ -1515,45 +1491,30 @@ footer {
    para que ocupe exactamente el mismo ancho que "Coronel Guglielmone"
 ════════════════════════════════════════════════════════════════ */
 /* ════════════════════════════════════════════════════════════════
-   2b. MATCH NAME WIDTH — iguala el ancho de nombre y apellido.
-   Lógica bidireccional:
-   - Si name-first > name-last (hero): expande name-last para igualar
-   - Si name-first < name-last (card): expande name-first para igualar
-   - Compensa el trailing space del último carácter con margin-right
+   2b. MATCH NAME WIDTH — solo para el card.
+   En el hero el apellido usa text-align:justify CSS nativo.
+   En el card: JS expande nombre para igualar ancho del apellido.
 ════════════════════════════════════════════════════════════════ */
 function matchNameWidth() {
-  document.querySelectorAll('.name-first').forEach(first => {
+  document.querySelectorAll('.card-name-block .name-first').forEach(first => {
     const last = first.nextElementSibling;
     if (!last || !last.classList.contains('name-last')) return;
 
-    // Resetear cualquier ajuste previo
+    // Reset
     first.style.letterSpacing = '';
     first.style.marginRight   = '';
-    last.style.letterSpacing  = '';
-    last.style.marginRight    = '';
 
     const firstW = first.getBoundingClientRect().width;
     const lastW  = last.getBoundingClientRect().width;
-    if (!firstW || !lastW) return;
+    if (!firstW || !lastW || firstW >= lastW) return;
 
-    function applySpacing(el, baseW, targetW) {
-      const charCount = el.textContent.trim().length;
-      if (charCount < 2) return;
-      const extraPx = (targetW - baseW) / charCount;
-      const fs      = parseFloat(getComputedStyle(el).fontSize);
-      const spacing = Math.max(0, extraPx / fs);
-      el.style.letterSpacing = spacing.toFixed(4) + 'em';
-      // Compensar trailing space del último carácter
-      el.style.marginRight   = '-' + spacing.toFixed(4) + 'em';
-    }
-
-    if (firstW >= lastW) {
-      // Hero: MARTINA es más ancho — expandir apellido
-      applySpacing(last, lastW, firstW);
-    } else {
-      // Card: apellido es más ancho — expandir nombre
-      applySpacing(first, firstW, lastW);
-    }
+    const charCount = first.textContent.trim().length;
+    const extraPx   = (lastW - firstW) / charCount;
+    const fs        = parseFloat(getComputedStyle(first).fontSize);
+    const spacing   = Math.max(0, extraPx / fs);
+    first.style.letterSpacing = spacing.toFixed(4) + 'em';
+    // Compensar trailing space del último carácter
+    first.style.marginRight   = '-' + spacing.toFixed(4) + 'em';
   });
 }
 

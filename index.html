@@ -62,7 +62,7 @@
   --gold-ghost:  rgba(184,144,46,.07);
 
   /* --- Text shadow unificada — 2px en todas las fuentes --- */
-  --shadow-text:  -1px 1px 5px rgb(36 33 24 / 40%), -1px 1px 1px rgb(99 76 33 / 40%);
+  --shadow-text:  -1px 1px 5px rgb(36 33 24 / 40%), -1px 1px 0px rgb(99 76 33 / 40%);
   --shadow-gold:  0 2px 10px rgba(184,144,46,.4);
 
   /* --- UI shadows --- */
@@ -195,7 +195,7 @@ img, svg { display: block }
   background: var(--gold-ghost); border-color: var(--gold-mid);
   transform: scale(1.04); box-shadow: 0 4px 18px rgba(184,144,46,.16);
 }
-@media(max-width:640px) { .nav-links { display: none } }
+@media(max-width:640px) { #nav { display: none } }
 
 /* ═══════════════════════════════════════════════════════════════
    MAIN CONTENT
@@ -438,7 +438,6 @@ main { position: relative; z-index: 10 }
   line-height: 1;
   color: var(--text-primary);
   font-variant-numeric: tabular-nums;
-  text-shadow: var(--shadow-text);
 }
 /* Single smooth breath: 1 → 0.08 → 1 — number barely dims,
    text swaps at the trough (42%), never fully disappears */
@@ -930,8 +929,6 @@ footer {
 ───────────────────────────────────────── -->
 <section id="hero" aria-label="Portada">
 
-  <p class="hero-eyebrow" id="he-ey">Una noche única</p>
-
   <p class="hero-script" id="he-sc">Save the Date</p>
 
   <div class="hero-rule" id="he-rule" aria-hidden="true"></div>
@@ -941,7 +938,7 @@ footer {
     <span class="name-last">Coronel Guglielmone</span>
   </div>
 
-  <div class="ornament" style="margin:36px auto 0" aria-hidden="true">
+  <div class="ornament" style="margin:40px auto" aria-hidden="true">
     <div class="ornament-line"></div>
     <div style="display:flex;align-items:center;gap:6px">
       <div class="ornament-dot"></div>
@@ -1012,14 +1009,23 @@ footer {
 <section id="details" class="section" aria-label="Detalles del evento">
   <div class="section-inner">
 
-    <p class="section-overline" data-reveal>Los detalles</p>
     <h2 class="section-headline" data-reveal data-d="1">Una noche especial</h2>
-    <p class="section-sub" data-reveal data-d="2">Todo preparado para recibirte</p>
 
-    <div class="details-card" data-reveal data-d="3">
+    <div class="ornament" style="margin:24px auto 32px" data-reveal data-d="2" aria-hidden="true">
+      <div class="ornament-line"></div>
+      <div style="display:flex;align-items:center;gap:6px">
+        <div class="ornament-dot"></div>
+        <div class="ornament-gem"></div>
+        <div class="ornament-dot"></div>
+      </div>
+      <div class="ornament-line"></div>
+    </div>
+
+    <p class="section-sub" data-reveal data-d="3">Todo preparado para recibirte</p>
+
+    <div class="details-card" data-reveal data-d="4">
       <!-- Card header -->
       <p class="card-eyebrow">MIS QUINCE AÑOS</p>
-      <p class="card-script">Save the Date</p>
 
       <!-- Name block: Martina stretches to match width of Coronel Guglielmone -->
       <div class="card-name-block">
@@ -1203,6 +1209,15 @@ footer {
      FOOTER
 ════════════════════════════════════════════ -->
 <footer>
+  <div class="ornament" style="margin:0 auto 28px" aria-hidden="true">
+    <div class="ornament-line"></div>
+    <div style="display:flex;align-items:center;gap:6px">
+      <div class="ornament-dot"></div>
+      <div class="ornament-gem"></div>
+      <div class="ornament-dot"></div>
+    </div>
+    <div class="ornament-line"></div>
+  </div>
   <p class="footer-text footer-title">Mis Quince Años</p>
   <p class="footer-text footer-date">Sábado 23 de Mayo · 2026</p>
 </footer>
@@ -1470,8 +1485,7 @@ footer {
 (function heroEntrance() {
   // Initial hidden states
   const items = [
-    { id: 'he-ey',   delay: 300  },
-    { id: 'he-sc',   delay: 600  },
+    { id: 'he-sc',   delay: 300  },
     { id: 'he-rule', delay: 900  },   // expands via class
     { id: 'he-name', delay: 1050 },
     { id: 'he-dt',   delay: 1300 },

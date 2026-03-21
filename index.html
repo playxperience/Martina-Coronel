@@ -170,7 +170,7 @@ img, svg { display: block }
 .nav-links { display: flex; gap: 32px; list-style: none }
 .nav-links a {
   font-size: .75rem; font-weight: 400;
-  letter-spacing: .26em; text-transform: uppercase;
+  letter-spacing: .24em; text-transform: uppercase;
   color: var(--text-muted);
   transition: color .25s;
   position: relative; padding-bottom: 3px;
@@ -185,7 +185,7 @@ img, svg { display: block }
 .nav-links a:hover::after { transform: scaleX(1) }
 .nav-rsvp {
   font-size: .72rem; font-weight: 400;
-  letter-spacing: .20em; text-transform: uppercase;
+  letter-spacing: .24em; text-transform: uppercase;
   color: var(--gold);
   border: 1px solid rgba(184,144,46,.32);
   padding: 8px 22px; border-radius: 999px;
@@ -252,7 +252,7 @@ main { position: relative; z-index: 10 }
   font-family: var(--f-ui);
   font-size: clamp(.58rem,.85vw,.7rem);
   font-weight: 300;
-  letter-spacing: .56em;
+  letter-spacing: .32em;
   text-transform: uppercase;
   color: var(--gold-mid);
   text-shadow: var(--shadow-text);
@@ -285,7 +285,7 @@ main { position: relative; z-index: 10 }
 .name-last {
   font-family: var(--f-display);
   font-weight: 300;
-  letter-spacing: .18em;
+  letter-spacing: .24em;
   color: var(--text-secondary);
   text-transform: uppercase;
   text-shadow: var(--shadow-text);
@@ -323,7 +323,7 @@ main { position: relative; z-index: 10 }
   font-family: var(--f-ui);
   font-size: clamp(.72rem, 1vw, .88rem);
   font-weight: 300;
-  letter-spacing: .22em;
+  letter-spacing: .24em;
   text-transform: uppercase;
   color: var(--text-secondary);
   text-shadow: var(--shadow-text);
@@ -367,7 +367,7 @@ main { position: relative; z-index: 10 }
 }
 .scroll-label {
   font-size: .62rem; font-weight: 300;
-  letter-spacing: .48em; text-transform: uppercase;
+  letter-spacing: .32em; text-transform: uppercase;
   color: var(--text-faint);
 }
 @keyframes fadeInDelay { to { opacity: .65 } }
@@ -379,7 +379,7 @@ main { position: relative; z-index: 10 }
 .countdown-label {
   font-family: var(--f-ui);
   font-size: .62rem; font-weight: 300;
-  letter-spacing: .52em; text-transform: uppercase;
+  letter-spacing: .32em; text-transform: uppercase;
   color: var(--text-muted);
   margin-bottom: 52px;
 }
@@ -455,7 +455,7 @@ main { position: relative; z-index: 10 }
   font-family: var(--f-ui);
   font-size: clamp(.62rem,.88vw,.75rem);  /* era .48–.58rem → ahora .62–.75rem */
   font-weight: 400;
-  letter-spacing: .42em;
+  letter-spacing: .32em;
   text-transform: uppercase;
   color: var(--text-faint);
 }
@@ -522,7 +522,7 @@ main { position: relative; z-index: 10 }
 .card-eyebrow {
   font-family: var(--f-ui);
   font-size: .72rem; font-weight: 300;
-  letter-spacing: .46em; text-transform: uppercase;
+  letter-spacing: .32em; text-transform: uppercase;
   color: var(--gold-mid);
   text-shadow: var(--shadow-text);
   margin-bottom: 14px;
@@ -598,7 +598,7 @@ main { position: relative; z-index: 10 }
   display: block;
   font-family: var(--f-ui);
   font-size: .58rem; font-weight: 400;
-  letter-spacing: .18em; text-transform: uppercase;
+  letter-spacing: .24em; text-transform: uppercase;
   color: var(--gold-mid);
   margin-top: 6px;
   min-height: 1em;
@@ -610,7 +610,7 @@ main { position: relative; z-index: 10 }
 .info-label {
   font-family: var(--f-ui);
   font-size: .66rem; font-weight: 400;
-  letter-spacing: .44em; text-transform: uppercase;
+  letter-spacing: .32em; text-transform: uppercase;
   color: var(--text-faint); margin-bottom: 10px;
 }
 /* ── ESTILO: info-value — valores principales del card (fecha, hora, lugar) ── */
@@ -634,29 +634,22 @@ main { position: relative; z-index: 10 }
 .btn-location {
   display: inline-flex; align-items: center; gap: 9px;
   margin-top: 44px;
-  padding: 14px 36px;
-  background: linear-gradient(135deg, var(--gold-dark) 0%, var(--gold) 45%, var(--gold-light) 100%);
-  color: #fff;
+  padding: 10px 28px;
+  background: transparent;
+  color: var(--gold);
   font-family: var(--f-ui);
-  font-size: .68rem; font-weight: 400;
+  font-size: .72rem; font-weight: 400;
   letter-spacing: .24em; text-transform: uppercase;
+  border: 1px solid rgba(184,144,46,.32);
   border-radius: 999px;
-  position: relative; overflow: hidden;
-  transition: transform .35s var(--spring), box-shadow .35s;
-  text-shadow: var(--shadow-text);
+  transition: background .3s, border-color .3s, transform .3s var(--spring), box-shadow .3s;
 }
-.btn-location::before {
-  content: '';
-  position: absolute; inset: 0;
-  background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 60%, #fff 120%);
-  opacity: 0;
-  transition: opacity .35s;
+.btn-location:hover {
+  background: var(--gold-ghost); border-color: var(--gold-mid);
+  transform: translateY(-2px) scale(1.03); box-shadow: 0 4px 18px rgba(184,144,46,.16);
 }
-.btn-location span, .btn-location svg { position: relative; z-index: 1 }
-.btn-location:hover { transform: translateY(-3px) scale(1.03); box-shadow: var(--shadow-btn) }
-.btn-location:hover::before { opacity: .6 }
 .btn-location:active { transform: scale(.98) }
-.btn-location svg { width: 15px; height: 15px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round }
+.btn-location svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round }
 
 /* ═══════════════════════════════════════════════════════════════
    RSVP SECTION
@@ -701,7 +694,7 @@ main { position: relative; z-index: 10 }
 .form-label {
   display: block;
   font-size: .68rem; font-weight: 400;
-  letter-spacing: .36em; text-transform: uppercase;
+  letter-spacing: .32em; text-transform: uppercase;
   color: var(--text-muted); margin-bottom: 6px;
 }
 .form-field {
@@ -732,7 +725,7 @@ textarea.form-field { height: 100px; resize: none; line-height: 1.65 }
   color: #fff;
   font-family: var(--f-ui);
   font-size: .7rem; font-weight: 400;
-  letter-spacing: .26em; text-transform: uppercase;
+  letter-spacing: .24em; text-transform: uppercase;
   border-radius: 999px;
   margin-top: 6px;
   position: relative; overflow: hidden;
@@ -803,7 +796,7 @@ footer {
 .footer-text {
   font-family: var(--f-ui);
   font-size: .72rem; font-weight: 300;
-  letter-spacing: .38em; text-transform: uppercase;
+  letter-spacing: .32em; text-transform: uppercase;
   color: var(--text-muted); line-height: 1;
   text-shadow: var(--shadow-text);
 }
@@ -863,7 +856,7 @@ footer {
 .section-overline {
   font-family: var(--f-ui);
   font-size: .78rem; font-weight: 300;  /* era .6rem → ahora .78rem */
-  letter-spacing: .48em; text-transform: uppercase;
+  letter-spacing: .32em; text-transform: uppercase;
   color: var(--gold-mid);
   text-align: center; margin-bottom: 28px;
   text-shadow: var(--shadow-text);
@@ -1522,26 +1515,45 @@ footer {
    para que ocupe exactamente el mismo ancho que "Coronel Guglielmone"
 ════════════════════════════════════════════════════════════════ */
 /* ════════════════════════════════════════════════════════════════
-   2b. MATCH NAME WIDTH — ajusta letter-spacing de cada .name-first
-   para que ocupe exactamente el mismo ancho que su .name-last hermano.
-   Funciona en hero Y en el card con las mismas clases unificadas.
+   2b. MATCH NAME WIDTH — iguala el ancho de nombre y apellido.
+   Lógica bidireccional:
+   - Si name-first > name-last (hero): expande name-last para igualar
+   - Si name-first < name-last (card): expande name-first para igualar
+   - Compensa el trailing space del último carácter con margin-right
 ════════════════════════════════════════════════════════════════ */
 function matchNameWidth() {
   document.querySelectorAll('.name-first').forEach(first => {
     const last = first.nextElementSibling;
     if (!last || !last.classList.contains('name-last')) return;
 
-    const targetW = last.getBoundingClientRect().width;
-    if (!targetW) return;
+    // Resetear cualquier ajuste previo
+    first.style.letterSpacing = '';
+    first.style.marginRight   = '';
+    last.style.letterSpacing  = '';
+    last.style.marginRight    = '';
 
-    first.style.letterSpacing = '0em';
-    const baseW = first.getBoundingClientRect().width;
-    if (baseW <= 0 || baseW >= targetW) return;
+    const firstW = first.getBoundingClientRect().width;
+    const lastW  = last.getBoundingClientRect().width;
+    if (!firstW || !lastW) return;
 
-    const charCount = first.textContent.trim().length;
-    const extraPx   = (targetW - baseW) / charCount;
-    const fs        = parseFloat(getComputedStyle(first).fontSize);
-    first.style.letterSpacing = Math.max(0, extraPx / fs).toFixed(4) + 'em';
+    function applySpacing(el, baseW, targetW) {
+      const charCount = el.textContent.trim().length;
+      if (charCount < 2) return;
+      const extraPx = (targetW - baseW) / charCount;
+      const fs      = parseFloat(getComputedStyle(el).fontSize);
+      const spacing = Math.max(0, extraPx / fs);
+      el.style.letterSpacing = spacing.toFixed(4) + 'em';
+      // Compensar trailing space del último carácter
+      el.style.marginRight   = '-' + spacing.toFixed(4) + 'em';
+    }
+
+    if (firstW >= lastW) {
+      // Hero: MARTINA es más ancho — expandir apellido
+      applySpacing(last, lastW, firstW);
+    } else {
+      // Card: apellido es más ancho — expandir nombre
+      applySpacing(first, firstW, lastW);
+    }
   });
 }
 

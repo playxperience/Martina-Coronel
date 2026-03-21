@@ -2,32 +2,29 @@
 <html lang="es">
 <head>
 
-<!-- ═══════════════════════════ META ═══════════════════════════ -->
+<!-- META -->
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>Martina Coronel Guglielmone · Mis Quince Años · 23 Mayo 2026</title>
 <meta name="description" content="Save the Date. Martina Coronel Guglielmone celebra sus Quince Años el Sábado 23 de Mayo 2026 a las 20:00 hs. Una noche para celebrar sueños, recuerdos y nuevos comienzos."/>
 <meta name="theme-color" content="#faf7f0"/>
 
-<!-- Open Graph — WhatsApp, Facebook, LinkedIn, etc.
-     IMPORTANTE: preview.jpg debe ser URL absoluta en producción.
-     Ejemplo: content="https://tudominio.com/preview.jpg"
-     Tamaño ideal: 1200×630 px, menos de 300KB -->
+<!-- Open Graph / Social -->
 <meta property="og:type"         content="website"/>
 <meta property="og:title"        content="Martina · Mis Quince Años · 23 Mayo 2026"/>
 <meta property="og:description"  content="Una noche para celebrar sueños, recuerdos y nuevos comienzos. Estás invitada."/>
-<meta property="og:image"        content="preview.jpg"/>
+<meta property="og:image"        content="https://playxperience.github.io/Martina-Coronel/preview.jpg"/>
 <meta property="og:image:width"  content="1200"/>
 <meta property="og:image:height" content="630"/>
 <meta property="og:image:type"   content="image/jpeg"/>
-<meta property="og:url"          content="https://example.com/martina"/>
+<meta property="og:url"          content="https://playxperience.github.io/Martina-Coronel/"/>
 <meta property="og:site_name"    content="Quince de Martina"/>
 
 <!-- Twitter / X Card -->
 <meta name="twitter:card"        content="summary_large_image"/>
 <meta name="twitter:title"       content="Martina · Mis Quince Años · 23 Mayo 2026"/>
 <meta name="twitter:description" content="Una noche para celebrar sueños, recuerdos y nuevos comienzos."/>
-<meta name="twitter:image"       content="preview.jpg"/>
+<meta name="twitter:image"       content="https://playxperience.github.io/Martina-Coronel/preview.jpg"/>
 
 <!-- Fonts: Cormorant Garamond + Beau Rivage + DM Sans + Italianno -->
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
@@ -36,9 +33,7 @@
 
 <style>
 
-/* ═══════════════════════════════════════════════════════════════
-   DESIGN TOKENS
-═══════════════════════════════════════════════════════════════ */
+/* ── DESIGN TOKENS ── */
 :root {
   /* --- Surfaces --- */
   --surface:       #f3ede0;
@@ -78,17 +73,11 @@
   --ease:   cubic-bezier(0.22, 1, 0.36, 1);
   --spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 
-  /* ─────────────────────────────────────────────────────────────
-     BACKGROUND IMAGE
-     Colocá bg.jpg en la MISMA CARPETA que el index.html
-     Si está en una subcarpeta: url('images/bg.jpg')
-     ───────────────────────────────────────────────────────────── */
+  /* ── BACKGROUND IMAGE — Colocá bg.jpg en la MISMA CARPETA que el index.html ── */
   --bg-photo: url('bg.jpg');
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   RESET
-═══════════════════════════════════════════════════════════════ */
+/* ── RESET ── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0 }
 html { font-size: 16px; scroll-behavior: smooth; -webkit-font-smoothing: antialiased }
 body { font-family: var(--f-ui); color: var(--text-primary); overflow-x: hidden }
@@ -97,10 +86,7 @@ a { text-decoration: none; color: inherit }
 button { border: none; background: none; font-family: inherit; cursor: pointer }
 img, svg { display: block }
 
-/* ═══════════════════════════════════════════════════════════════
-   BACKGROUND — bg.jpg en la misma carpeta
-   Parallax via background-position-y (sin transform, sin glitch)
-═══════════════════════════════════════════════════════════════ */
+/* ── BACKGROUND — bg.jpg en la misma carpeta — Parallax via background-position-y (sin transform, sin glitch) ── */
 #bg {
   position: fixed; inset: 0; z-index: 0;
   background-color: #fdfcfa; /* fallback si bg.jpg no carga */
@@ -141,9 +127,7 @@ img, svg { display: block }
   pointer-events: none;
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   NAVIGATION
-═══════════════════════════════════════════════════════════════ */
+/* ── NAVIGATION ── */
 #nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 900;
   padding: 24px clamp(20px,5vw,56px);
@@ -195,9 +179,7 @@ img, svg { display: block }
 }
 @media(max-width:640px) { #nav { display: none } }
 
-/* ═══════════════════════════════════════════════════════════════
-   MAIN CONTENT
-═══════════════════════════════════════════════════════════════ */
+/* ── MAIN CONTENT ── */
 main { position: relative; z-index: 10 }
 
 /* Section base */
@@ -234,9 +216,7 @@ main { position: relative; z-index: 10 }
   border-top: 1px solid rgba(184,144,46,.1);
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   HERO
-═══════════════════════════════════════════════════════════════ */
+/* ── HERO ── */
 #hero {
   min-height: 100svh;
   display: flex; flex-direction: column;
@@ -371,9 +351,7 @@ main { position: relative; z-index: 10 }
 }
 @keyframes fadeInDelay { to { opacity: .65 } }
 
-/* ═══════════════════════════════════════════════════════════════
-   COUNTDOWN
-═══════════════════════════════════════════════════════════════ */
+/* ── COUNTDOWN ── */
 #countdown { text-align: center }
 .countdown-label {
   font-family: var(--f-ui);
@@ -487,9 +465,7 @@ main { position: relative; z-index: 10 }
   .cd-sep  { font-size: 1.4rem; margin-bottom: 26px }
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   EVENT DETAILS CARD
-═══════════════════════════════════════════════════════════════ */
+/* ── EVENT DETAILS CARD ── */
 #details { text-align: center }
 
 .details-card {
@@ -642,9 +618,7 @@ main { position: relative; z-index: 10 }
 .btn-location:active { transform: scale(.98) }
 .btn-location svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round }
 
-/* ═══════════════════════════════════════════════════════════════
-   RSVP SECTION
-═══════════════════════════════════════════════════════════════ */
+/* ── RSVP SECTION ── */
 #rsvp { text-align: center }
 .rsvp-inner { max-width: 580px; margin: 0 auto }
 
@@ -759,9 +733,7 @@ textarea.form-field { height: 100px; resize: none; line-height: 1.65 }
 }
 .success-text { font-size: .9rem; font-weight: 300; color: var(--text-muted); line-height: 1.7 }
 
-/* ═══════════════════════════════════════════════════════════════
-   FOOTER
-═══════════════════════════════════════════════════════════════ */
+/* ── FOOTER ── */
 footer {
   padding: 52px clamp(20px,6vw,64px);
   text-align: center;
@@ -807,9 +779,7 @@ footer {
 .mbars { display: flex; align-items: flex-end; gap: 2.5px; height: 14px }
 .mbar  { width: 2.5px; border-radius: 1.5px; background: var(--gold); transition: height .14s }
 
-/* ═══════════════════════════════════════════════════════════════
-   SCROLL REVEAL SYSTEM
-═══════════════════════════════════════════════════════════════ */
+/* ── SCROLL REVEAL SYSTEM ── */
 [data-reveal] {
   opacity: 0;
   transform: translateY(26px);
@@ -825,9 +795,7 @@ footer {
 [data-reveal="scale"].revealed { transform: scale(1) none }
 [data-reveal="scale"].revealed { transform: none; scale: 1 }
 
-/* ═══════════════════════════════════════════════════════════════
-   SECTION HEADERS
-═══════════════════════════════════════════════════════════════ */
+/* ── SECTION HEADERS ── */
 /* ── ESTILO: section-overline — etiqueta superior de secciones (ej: "CUENTA REGRESIVA") ── */
 .section-overline {
   font-family: var(--f-ui);
@@ -857,9 +825,7 @@ footer {
   text-shadow: var(--shadow-text);
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   RESPONSIVE
-═══════════════════════════════════════════════════════════════ */
+/* ── RESPONSIVE ── */
 @media(max-width:480px) {
   .hero-info-item { padding: 0 12px; letter-spacing: .20em }
 }
@@ -875,9 +841,7 @@ footer {
 <canvas id="nebula-canvas" aria-hidden="true"></canvas>
 <canvas id="particles-canvas" aria-hidden="true"></canvas>
 
-<!-- ════════════════════════════════════════════
-     NAVIGATION
-════════════════════════════════════════════ -->
+<!-- ══ NAV ══ -->
 <nav id="nav" role="navigation" aria-label="Navegación">
   <span class="nav-brand"><em>Martina</em></span>
   <ul class="nav-links" role="list">
@@ -888,14 +852,10 @@ footer {
   <button class="nav-rsvp" onclick="document.getElementById('rsvp').scrollIntoView({behavior:'smooth'})">RSVP</button>
 </nav>
 
-<!-- ════════════════════════════════════════════
-     MAIN
-════════════════════════════════════════════ -->
+<!-- ══ MAIN ══ -->
 <main>
 
-<!-- ─────────────────────────────────────────
-     HERO
-───────────────────────────────────────── -->
+<!-- ── HERO ── -->
 <section id="hero" aria-label="Portada">
 
   <p class="hero-script" id="he-sc">Save the Date</p>
@@ -933,9 +893,7 @@ footer {
 </section>
 
 
-<!-- ─────────────────────────────────────────
-     COUNTDOWN
-───────────────────────────────────────── -->
+<!-- ── COUNTDOWN ── -->
 <section id="countdown" class="section" aria-label="Cuenta regresiva">
   <div class="section-inner">
 
@@ -972,9 +930,7 @@ footer {
 </section>
 
 
-<!-- ─────────────────────────────────────────
-     EVENT DETAILS
-───────────────────────────────────────── -->
+<!-- ── DETAILS ── -->
 <section id="details" class="section" aria-label="Detalles del evento">
   <div class="section-inner">
 
@@ -1070,9 +1026,7 @@ footer {
 </section>
 
 
-<!-- ─────────────────────────────────────────
-     RSVP
-───────────────────────────────────────── -->
+<!-- ── RSVP ── -->
 <section id="rsvp" class="section" aria-label="Confirmar asistencia">
   <div class="section-inner">
     <div class="rsvp-inner">
@@ -1174,9 +1128,7 @@ footer {
 
 </main>
 
-<!-- ════════════════════════════════════════════
-     FOOTER
-════════════════════════════════════════════ -->
+<!-- ══ FOOTER ══ -->
 <footer>
   <div class="ornament" style="margin:0 auto 28px" aria-hidden="true">
     <div class="ornament-line"></div>
@@ -1191,11 +1143,7 @@ footer {
   <p class="footer-text footer-date">Sábado 23 de Mayo · 2026</p>
 </footer>
 
-<!-- ════════════════════════════════════════════
-     AUDIO — music.mp3 en la misma carpeta
-     autoplay con muted para cumplir política de navegadores;
-     se desmutea automáticamente al primer toque/click
-════════════════════════════════════════════ -->
+<!-- ══ AUDIO ══ -->
 <audio id="bg-audio" loop autoplay muted preload="auto" playsinline>
   <source src="music.mp3" type="audio/mpeg"/>
   <source src="music.aac" type="audio/aac"/>
@@ -1212,15 +1160,9 @@ footer {
   </div>
 </button>
 
-<!-- ════════════════════════════════════════════
-     JAVASCRIPT
-════════════════════════════════════════════ -->
+<!-- ══ SCRIPTS ══ -->
 <script>
-/* ════════════════════════════════════════════════════════════════
-   1a. NEBULOSAS — grandes manchas de luz difusa detrás de las partículas
-   5 orbes que derivan lentamente como nubes de aurora.
-   Se mezclan con bg.jpg sin taparlo.
-════════════════════════════════════════════════════════════════ */
+/* ── 1a. NEBULOSAS — grandes manchas de luz difusa detrás de las partículas — 5 orbes que derivan lentamente como nubes de aurora. ── */
 (function initNebula() {
   const canvas = document.getElementById('nebula-canvas');
   const ctx    = canvas.getContext('2d');
@@ -1309,10 +1251,7 @@ footer {
   requestAnimationFrame(draw);
 })();
 
-/* ════════════════════════════════════════════════════════════════
-   1b. PARTÍCULAS — luciérnagas: deriva independiente, giros suaves,
-       destellos aleatorios
-════════════════════════════════════════════════════════════════ */
+/* ── 1b. PARTÍCULAS — luciérnagas: deriva independiente, giros suaves, — destellos aleatorios ── */
 (function initParticles() {
   const canvas = document.getElementById('particles-canvas');
   const ctx    = canvas.getContext('2d');
@@ -1448,9 +1387,7 @@ footer {
   requestAnimationFrame(drawFrame);
 })();
 
-/* ════════════════════════════════════════════════════════════════
-   2. HERO STAGGERED ENTRANCE
-════════════════════════════════════════════════════════════════ */
+/* ── 2. HERO STAGGERED ENTRANCE ── */
 (function heroEntrance() {
   // Initial hidden states
   const items = [
@@ -1486,15 +1423,8 @@ footer {
   });
 })();
 
-/* ════════════════════════════════════════════════════════════════
-   2b. MATCH NAME WIDTH — ajusta letter-spacing de "Martina"
-   para que ocupe exactamente el mismo ancho que "Coronel Guglielmone"
-════════════════════════════════════════════════════════════════ */
-/* ════════════════════════════════════════════════════════════════
-   2b. MATCH NAME WIDTH — solo para el card.
-   En el hero el apellido usa text-align:justify CSS nativo.
-   En el card: JS expande nombre para igualar ancho del apellido.
-════════════════════════════════════════════════════════════════ */
+/* ── 2b. MATCH NAME WIDTH — ajusta letter-spacing de "Martina" — para que ocupe exactamente el mismo ancho que "Coronel Guglielmone" ── */
+/* ── 2b. MATCH NAME WIDTH — solo para el card. — En el hero el apellido usa text-align:justify CSS nativo. ── */
 function matchNameWidth() {
   document.querySelectorAll('.card-name-block .name-first').forEach(first => {
     const last = first.nextElementSibling;
@@ -1530,18 +1460,12 @@ if (document.fonts && document.fonts.ready) {
     window.addEventListener('resize', matchNameWidth, { passive: true });
   });
 }
-/* ════════════════════════════════════════════════════════════════
-   3. NAVIGATION SCROLL
-════════════════════════════════════════════════════════════════ */
+/* ── 3. NAVIGATION SCROLL ── */
 window.addEventListener('scroll', () => {
   document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 60);
 }, { passive: true });
 
-/* ════════════════════════════════════════════════════════════════
-   3b. BG PARALLAX — solo en desktop, estático en móvil
-   En mobile el viewport height cambia con la barra del navegador
-   causando saltos. Solución: parallax solo en hover devices.
-════════════════════════════════════════════════════════════════ */
+/* ── 3b. BG PARALLAX — solo en desktop, estático en móvil — En mobile el viewport height cambia con la barra del navegador ── */
 (function bgParallax() {
   const bg = document.getElementById('bg');
 
@@ -1573,9 +1497,7 @@ window.addEventListener('scroll', () => {
   requestAnimationFrame(loop);
 })();
 
-/* ════════════════════════════════════════════════════════════════
-   4. SCROLL REVEAL  — IntersectionObserver
-════════════════════════════════════════════════════════════════ */
+/* ── 4. SCROLL REVEAL  — IntersectionObserver ── */
 const io = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (!entry.isIntersecting) return;
@@ -1586,10 +1508,7 @@ const io = new IntersectionObserver((entries) => {
 
 document.querySelectorAll('[data-reveal]').forEach(el => io.observe(el));
 
-/* ════════════════════════════════════════════════════════════════
-   5. COUNTDOWN TIMER
-   Target: Saturday 23 May 2026 at 20:00 local time
-════════════════════════════════════════════════════════════════ */
+/* ── 5. COUNTDOWN TIMER — Target: Saturday 23 May 2026 at 20:00 local time ── */
 // new Date(year, monthIndex, day, hours, minutes, seconds)
 // month 4 = May (0-indexed)
 const COUNTDOWN_TARGET = new Date(2026, 4, 23, 20, 0, 0);
@@ -1651,23 +1570,7 @@ function updateCountdown() {
 updateCountdown();
 setInterval(updateCountdown, 1000);
 
-/* ════════════════════════════════════════════════════════════════
-   6. RSVP → GOOGLE FORMS (sin iframe, sin cambiar el formulario)
-   ─────────────────────────────────────────────────────────────
-   CÓMO OBTENER LOS entry.XXXXXXXXX DE TU FORMULARIO:
-   1. Abrí tu Google Form en el navegador
-   2. Hacé clic en "Vista previa" (ícono del ojo)
-   3. Abrí DevTools → Network
-   4. Completá y enviá el formulario de prueba
-   5. Buscá la request a "formResponse"
-   6. En "Payload" verás: entry.123456789=valor
-   7. Copiá cada entry.XXXXXXXXX y pegalo abajo
-
-   ALTERNATIVA MÁS FÁCIL:
-   1. Abrí tu Form → ⋮ → "Obtener vínculo de relleno previo"
-   2. Completá cada campo → "Obtener vínculo"
-   3. En la URL verás: entry.XXXXXXXXX=tuvalor
-   ────────────────────────────────────────────────────────────── */
+/* ── RSVP → GOOGLE FORMS ── */
 
 // ID del formulario
 const GF_BASE = 'https://docs.google.com/forms/d/e/1FAIpQLScDzkfzvYt9x7ofqzF-jc1xsM64rMPMtoXQddxPmBE56pHnyQ/formResponse';
@@ -1753,12 +1656,7 @@ document.getElementById('f-name').addEventListener('input', function() {
   this.style.boxShadow   = '';
 });
 
-/* ════════════════════════════════════════════════════════════════
-   7. MÚSICA — autoplay con desmuteado en primer toque
-   Los navegadores bloquean autoplay con sonido, pero permiten
-   autoplay muted. Al primer click/toque del usuario se desmutea
-   automáticamente y la música suena sin que tenga que hacer nada.
-════════════════════════════════════════════════════════════════ */
+/* ── 7. MÚSICA — autoplay con desmuteado en primer toque — Los navegadores bloquean autoplay con sonido, pero permiten ── */
 (function initMusic() {
   const btn    = document.getElementById('music-btn');
   const audio  = document.getElementById('bg-audio');
@@ -1880,12 +1778,7 @@ document.getElementById('f-name').addEventListener('input', function() {
   audio.addEventListener('ended', () => setPlaying(false));
 })();
 
-/* ════════════════════════════════════════════════════════════════
-   9. ADD TO CALENDAR
-   Genera un archivo .ics universal compatible con:
-   Google Calendar, Apple Calendar, Outlook y cualquier app
-   de calendario en iOS y Android.
-════════════════════════════════════════════════════════════════ */
+/* ── ADD TO CALENDAR ── */
 function addToCalendar() {
   // Datos del evento
   const event = {
@@ -1952,10 +1845,7 @@ function addToCalendar() {
   }
 }
 
-/* ════════════════════════════════════════════════════════════════
-   10. BG IMAGE DIAGNOSTIC
-   Si bg.jpg no carga, muestra mensaje en consola con instrucciones
-════════════════════════════════════════════════════════════════ */
+/* ── 10. BG IMAGE DIAGNOSTIC — Si bg.jpg no carga, muestra mensaje en consola con instrucciones ── */
 (function checkBg() {
   const probe = new Image();
   probe.onload = () => console.info('✅ bg.jpg cargó correctamente.');

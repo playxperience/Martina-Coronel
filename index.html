@@ -220,7 +220,7 @@ main { position: relative; z-index: 10 }
   display: flex; flex-direction: column;
   align-items: center; justify-content: flex-start;
   text-align: center;
-  padding: clamp(80px,12vw,130px) clamp(20px,6vw,64px) clamp(60px,10vw,100px);
+  padding: clamp(110px,16vw,170px) clamp(20px,6vw,64px) clamp(60px,10vw,100px);
   position: relative;
 }
 
@@ -290,27 +290,66 @@ main { position: relative; z-index: 10 }
 
 /* sin vignette en hero — el parallax ya da profundidad suficiente */
 /* ── ESTILO: hero-info-bar — fila de info con separadores tipo barra ── */
+/* ── hero-info-bar — 3 columnas con separadores altos tipo imagen ── */
 .hero-info-bar {
   display: inline-flex;
-  align-items: center;
+  align-items: stretch;
   gap: 0;
   margin-top: 0;
 }
-.hero-info-item {
+/* Columna lateral: Sábado / La Rivière — una línea centrada */
+.hero-info-col {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 28px;
   font-family: var(--f-ui);
-  font-size: clamp(.72rem, 1vw, .88rem);
+  font-size: clamp(.65rem, .9vw, .8rem);
   font-weight: 300;
   letter-spacing: .24em;
   text-transform: uppercase;
   color: var(--text-secondary);
   text-shadow: var(--shadow-text);
   white-space: nowrap;
-  padding: 0 22px;
 }
+/* Columna central: Mayo / 23 / 2026 — 3 renglones */
+.hero-info-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 28px;
+  gap: 2px;
+}
+.hero-info-month {
+  font-family: var(--f-ui);
+  font-size: clamp(.62rem, .85vw, .76rem);
+  font-weight: 300;
+  letter-spacing: .24em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  text-shadow: var(--shadow-text);
+}
+.hero-info-day {
+  font-family: var(--f-countdown); /* Italianno */
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  line-height: 1;
+  color: var(--text-secondary);
+  text-shadow: var(--shadow-text);
+}
+.hero-info-year {
+  font-family: var(--f-ui);
+  font-size: clamp(.62rem, .85vw, .76rem);
+  font-weight: 300;
+  letter-spacing: .24em;
+  color: var(--text-secondary);
+  text-shadow: var(--shadow-text);
+}
+/* Separador vertical que cubre los 3 renglones */
 .hero-info-sep {
   width: 1px;
-  height: 16px;
-  background: linear-gradient(to bottom, transparent, rgba(184,144,46,.5), transparent);
+  align-self: stretch;
+  background: linear-gradient(to bottom, transparent 0%, rgba(184,144,46,.5) 20%, rgba(184,144,46,.5) 80%, transparent 100%);
   flex-shrink: 0;
 }
 
@@ -825,7 +864,8 @@ footer {
 
 /* ── RESPONSIVE ── */
 @media(max-width:480px) {
-  .hero-info-item { padding: 0 12px; letter-spacing: .20em }
+  .hero-info-col { padding: 6px 16px; letter-spacing: .18em }
+  .hero-info-center { padding: 6px 16px }
 }
 
 </style>
@@ -875,12 +915,16 @@ footer {
     <div class="ornament-line"></div>
   </div>
 
-  <div class="hero-info-bar" id="he-dt" aria-label="Sábado 23 de Mayo 2026, La Rivière">
-    <span class="hero-info-item">Sábado</span>
+  <div class="hero-info-bar" id="he-dt" aria-label="Sábado, Mayo 23 de 2026, La Rivière">
+    <span class="hero-info-col">Sábado</span>
     <span class="hero-info-sep" aria-hidden="true"></span>
-    <span class="hero-info-item">Mayo 23</span>
+    <div class="hero-info-center">
+      <span class="hero-info-month">Mayo</span>
+      <span class="hero-info-day">23</span>
+      <span class="hero-info-year">2026</span>
+    </div>
     <span class="hero-info-sep" aria-hidden="true"></span>
-    <span class="hero-info-item">La Rivière</span>
+    <span class="hero-info-col">La Rivière</span>
   </div>
 
   <div class="hero-scroll" aria-hidden="true">

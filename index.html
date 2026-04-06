@@ -29,7 +29,7 @@
 <!-- Fonts: Cormorant Garamond + Beau Rivage + DM Sans + Italianno -->
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Beau+Rivage&family=DM+Sans:wght@200;300;400;500&family=Italianno&display=swap"/>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Beau+Rivage&family=DM+Sans:wght@200;300;400;500&family=Italianno&family=Cinzel:wght@400;500&display=swap"/>
 
 <style>
 
@@ -68,6 +68,7 @@
   --f-ui:      'DM Sans', system-ui, sans-serif;
   --f-script:  'Beau Rivage', cursive;
   --f-countdown: 'Italianno', Georgia, serif;
+  --f-cinzel:    'Cinzel', Georgia, serif;
 
   /* --- Motion --- */
   --ease:   cubic-bezier(0.22, 1, 0.36, 1);
@@ -332,9 +333,9 @@ main { position: relative; z-index: 10 }
   text-shadow: var(--shadow-text);
 }
 .hero-info-day {
-  font-family: var(--f-ui);
+  font-family: var(--f-cinzel);
   font-size: clamp(2.2rem, 4.5vw, 3.6rem);
-  font-weight: 700;
+  font-weight: 400;
   line-height: .9;
   color: var(--text-secondary);
   text-shadow: var(--shadow-text);

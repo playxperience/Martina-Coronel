@@ -26,10 +26,10 @@
 <meta name="twitter:description" content="Una noche para celebrar sueños, recuerdos y nuevos comienzos."/>
 <meta name="twitter:image"       content="https://playxperience.github.io/Martina-Coronel/preview.jpg"/>
 
-<!-- Fonts: Cormorant Garamond + Beau Rivage + DM Sans + Italianno -->
+<!-- Fonts: Cormorant Garamond + Beau Rivage + DM Sans + Italianno + Cinzel + Great Vibes -->
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Beau+Rivage&family=DM+Sans:wght@200;300;400;500&family=Italianno&family=Cinzel:wght@400;500&display=swap"/>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Beau+Rivage&family=DM+Sans:wght@200;300;400;500&family=Italianno&family=Cinzel:wght@400;500&family=Great+Vibes&display=swap"/>
 
 <style>
 
@@ -69,6 +69,7 @@
   --f-script:  'Beau Rivage', cursive;
   --f-countdown: 'Italianno', Georgia, serif;
   --f-cinzel:    'Cinzel', Georgia, serif;
+  --f-great:     'Great Vibes', cursive;
 
   /* --- Motion --- */
   --ease:   cubic-bezier(0.22, 1, 0.36, 1);
@@ -253,7 +254,7 @@ main { position: relative; z-index: 10 }
   font-family: var(--f-display);
   font-weight: 300;
   letter-spacing: .24em;
-  color: var(--text-secondary);
+  color: #964362;
   text-transform: uppercase;
   text-shadow: var(--shadow-text);
   white-space: nowrap;
@@ -262,7 +263,7 @@ main { position: relative; z-index: 10 }
 .name-first {
   font-family: var(--f-display);
   font-weight: 300;
-  text-transform: uppercase;
+  text-transform: none;
   color: var(--text-secondary);
   text-shadow: var(--shadow-text);
   display: block;
@@ -270,7 +271,7 @@ main { position: relative; z-index: 10 }
 }
 
 /* Tamaños según contexto */
-#he-name .name-first  { font-size: clamp(2.8rem,8vw,7rem); line-height: .93; letter-spacing: .28em }
+#he-name .name-first  { font-family: var(--f-great); font-size: clamp(3.5rem,10vw,9rem); font-weight: 400; letter-spacing: .02em; line-height: .95; color: #964362; text-shadow: -1px 1px 6px rgb(36 33 24 / 20%); }
 #he-name .name-last   {
   font-size: clamp(.9rem,2.6vw,2.2rem); margin-top: 8px;
   text-align-last: justify;
@@ -298,21 +299,6 @@ main { position: relative; z-index: 10 }
   align-items: stretch;
   width: clamp(300px, 65vw, 580px);
   margin-top: 0;
-}
-/* Columna lateral: Sábado / La Rivière */
-.hero-info-col {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 8px 8px;
-  font-family: var(--f-ui);
-  font-size: clamp(.9rem, 1.3vw, 1.1rem);
-  font-weight: 300;
-  letter-spacing: .24em;
-  text-transform: uppercase;
-  color: var(--text-secondary);
-  text-shadow: var(--shadow-text);
-  white-space: nowrap;
 }
 /* Columna central: Mayo / 23 / 2026 */
 .hero-info-center {
@@ -868,12 +854,100 @@ footer {
   text-shadow: var(--shadow-text);
 }
 
+/* ── hero new elements ── */
+.hero-invite {
+  font-family: var(--f-great);
+  font-size: clamp(1.6rem,3vw,2.4rem);
+  font-weight: 400;
+  color: #964362;
+  text-shadow: var(--shadow-text);
+  margin-top: 10px;
+  letter-spacing: .06em;
+}
+.hero-xv {
+  font-family: var(--f-great);
+  font-size: clamp(1.4rem,2.5vw,2rem);
+  font-weight: 400;
+  letter-spacing: .02em;
+  text-transform: none;
+  color: #964362;
+  text-shadow: var(--shadow-text);
+  margin-top: 0;
+}
+.hero-city {
+  font-family: var(--f-ui);
+  font-size: clamp(.72rem,1vw,.86rem);
+  font-weight: 300;
+  letter-spacing: .32em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  text-shadow: var(--shadow-text);
+  margin-top: 20px;
+}
+/* info-col with 2 lines */
+.hero-info-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 8px;
+  gap: 4px;
+}
+.hero-info-top {
+  font-family: var(--f-ui);
+  font-size: clamp(.8rem,1.1vw,.98rem);
+  font-weight: 300;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  text-shadow: var(--shadow-text);
+  white-space: nowrap;
+}
+.hero-info-top--pink { color: #964362; }
+.hero-info-bot--pink { color: #964362; }
+.hero-info-bot {
+  font-family: var(--f-ui);
+  font-size: clamp(.68rem,.9vw,.82rem);
+  font-weight: 300;
+  letter-spacing: .24em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  text-shadow: var(--shadow-text);
+  white-space: nowrap;
+}
+
 /* ── RESPONSIVE ── */
 @media(max-width:480px) {
   .hero-info-bar { width: clamp(260px, 90vw, 380px) }
   .hero-info-col { font-size: .78rem; letter-spacing: .18em }
   .hero-info-month, .hero-info-year { font-size: .78rem }
   .hero-info-center { padding: 8px 16px }
+}
+
+
+/* FIX ESPECIFICO HERO */
+#he-name .name-first { color: #964362 !important; }
+#he-name .name-last  { color: #964362 !important; }
+.hero-invite, .hero-xv { color: #964362 !important; }
+
+/* FECHA Y HORA COLOR */
+.hero-info-top,
+.hero-info-day {
+  color: #964362 !important;
+}
+
+
+/* FIX PAGINAS INTERNAS COLOR Y FUENTE */
+.section-overline,
+.section-headline,
+.info-value,
+.rsvp-script {
+  color: #964362 !important;
+}
+
+/* Martina en card misma fuente que hero */
+.card-name-block .name-first {
+  font-family: var(--f-great) !important;
 }
 
 </style>
@@ -904,16 +978,15 @@ footer {
 <!-- ── HERO ── -->
 <section id="hero" aria-label="Portada">
 
-  <p class="hero-script" id="he-sc">Save the Date</p>
-
-  <div class="hero-rule" id="he-rule" aria-hidden="true"></div>
-
   <div id="he-name">
-    <span class="name-first">Martina</span>
+    <span class="name-first" id="he-sc">Martina</span>
     <span class="name-last">Coronel Guglielmone</span>
   </div>
 
-  <div class="ornament" style="margin:clamp(44px,7vw,72px) auto clamp(32px,5vw,52px)" aria-hidden="true">
+  <p class="hero-invite" id="he-inv">Invita a su fiesta</p>
+  <p class="hero-xv" id="he-xv">de XV años</p>
+
+  <div class="ornament" style="margin:clamp(28px,4vw,44px) auto" aria-hidden="true">
     <div class="ornament-line"></div>
     <div style="display:flex;align-items:center;gap:6px">
       <div class="ornament-dot"></div>
@@ -923,19 +996,29 @@ footer {
     <div class="ornament-line"></div>
   </div>
 
-  <div class="hero-info-bar" id="he-dt" aria-label="Sábado, Mayo 23 de 2026, La Rivière">
-    <span class="hero-info-col">Sábado</span>
+  <div class="hero-info-bar" id="he-dt" aria-label="Sábado 23 de Mayo 2026, La Rivière">
+    <span class="hero-info-col">
+      <span class="hero-info-top">23 Mayo</span>
+      <span class="hero-info-bot hero-info-bot--pink">Sábado</span>
+    </span>
     <span class="hero-info-sep" aria-hidden="true"></span>
     <div class="hero-info-center">
-      <span class="hero-info-month">Mayo</span>
-      <span class="hero-info-day">23</span>
-      <span class="hero-info-year">2026</span>
+      <span class="hero-info-day">21:30</span>
+      <span class="hero-info-year">Horas</span>
     </div>
     <span class="hero-info-sep" aria-hidden="true"></span>
-    <span class="hero-info-col">La Rivière</span>
+    <span class="hero-info-col">
+      <span class="hero-info-top hero-info-top--pink">La Rivière</span>
+      <span class="hero-info-bot">Tenida Elegante</span>
+    </span>
   </div>
 
+  <p class="hero-city" id="he-city">Asunción, 2026.</p>
 
+  <div class="hero-scroll" aria-hidden="true">
+    <div class="scroll-track"><div class="scroll-ball"></div></div>
+    <span class="scroll-label">Desliza</span>
+  </div>
 
 </section>
 
@@ -1187,7 +1270,22 @@ footer {
   <p class="footer-text footer-date">Sábado 23 de Mayo · 2026</p>
 </footer>
 
+<!-- ══ AUDIO ══ -->
+<audio id="bg-audio" loop autoplay muted preload="auto" playsinline>
+  <source src="music.mp3" type="audio/mpeg"/>
+  <source src="music.aac" type="audio/aac"/>
+</audio>
 
+<!-- Music button -->
+<button id="music-btn" aria-label="Reproducir música" aria-pressed="false">
+  <div class="mbars" id="mbars" aria-hidden="true">
+    <div class="mbar" id="mb1" style="height:4px"></div>
+    <div class="mbar" id="mb2" style="height:11px"></div>
+    <div class="mbar" id="mb3" style="height:6px"></div>
+    <div class="mbar" id="mb4" style="height:13px"></div>
+    <div class="mbar" id="mb5" style="height:5px"></div>
+  </div>
+</button>
 
 <!-- ══ SCRIPTS ══ -->
 <script>
@@ -1420,10 +1518,11 @@ footer {
 (function heroEntrance() {
   // Initial hidden states
   const items = [
-    { id: 'he-sc',   delay: 300  },
-    { id: 'he-rule', delay: 900  },   // expands via class
-    { id: 'he-name', delay: 1050 },
-    { id: 'he-dt',   delay: 1300 },
+    { id: 'he-name', delay: 300  },
+    { id: 'he-inv',  delay: 600  },
+    { id: 'he-xv',   delay: 750  },
+    { id: 'he-dt',   delay: 1000 },
+    { id: 'he-city', delay: 1200 },
   ];
 
   // Set initial invisible state

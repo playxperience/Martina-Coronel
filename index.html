@@ -66,7 +66,6 @@
   /* --- Fonts --- */
   --f-display: 'Cormorant Garamond', Georgia, serif;
   --f-ui:      'DM Sans', system-ui, sans-serif;
-  --f-script:  'Beau Rivage', cursive;
   --f-countdown: 'Italianno', Georgia, serif;
   --f-cinzel:    'Cinzel', Georgia, serif;
   --f-great:     'Great Vibes', cursive;
@@ -77,6 +76,22 @@
 
   /* ── BACKGROUND IMAGE — Colocá bg.jpg en la MISMA CARPETA que el index.html ── */
   --bg-photo: url('bg.jpg');
+
+  /* ── STYLE SYSTEM — 3 estilos principales reutilizables ── */
+  /* Estilo 1: Nombre primario (Martina) — fuente script, rosa */
+  --style-1-font: var(--f-great);
+  --style-1-color: #E63280;
+  --style-1-weight: 400;
+
+  /* Estilo 2: Nombre secundario (Coronel Guglielmone) — Cormorant, rosa */
+  --style-2-font: var(--f-display);
+  --style-2-color: #E63280;
+  --style-2-weight: 400;
+
+  /* Estilo 3: Acentos de sección (headlines, valores) — Cormorant, rosa */
+  --style-3-font: var(--f-display);
+  --style-3-color: #E63280;
+  --style-3-weight: 400;
 }
 
 /* ── RESET ── */
@@ -87,6 +102,31 @@ body { font-family: var(--f-ui); color: var(--text-primary); overflow-x: hidden 
 a { text-decoration: none; color: inherit }
 button { border: none; background: none; font-family: inherit; cursor: pointer }
 img, svg { display: block }
+
+/* ── CLASES REUTILIZABLES PARA ESTILOS ── */
+/* Estilo 1: Nombre primario (Martina y similares) */
+.style-1 {
+  font-family: var(--style-1-font);
+  color: var(--style-1-color);
+  font-weight: var(--style-1-weight);
+  text-shadow: var(--shadow-text);
+}
+
+/* Estilo 2: Nombre secundario (Coronel Guglielmone) */
+.style-2 {
+  font-family: var(--style-2-font);
+  color: var(--style-2-color);
+  font-weight: var(--style-2-weight);
+  text-shadow: var(--shadow-text);
+}
+
+/* Estilo 3: Acentos de sección (headlines, valores destacados) */
+.style-3 {
+  font-family: var(--style-3-font);
+  color: var(--style-3-color);
+  font-weight: var(--style-3-weight);
+  text-shadow: var(--shadow-text);
+}
 
 /* ── BACKGROUND — bg.jpg en la misma carpeta — Parallax via background-position-y (sin transform, sin glitch) ── */
 #bg {
@@ -227,25 +267,6 @@ main { position: relative; z-index: 10 }
 }
 
 
-.hero-script {
-  font-family: var(--f-script);
-  font-size: clamp(3rem,7vw,5.8rem);
-  color: var(--gold);
-  line-height: 1;
-  text-shadow: var(--shadow-gold), var(--shadow-text);
-  margin-bottom: 6px;
-}
-
-/* Animated rule */
-.hero-rule {
-  height: 1px;
-  width: 0;
-  background: linear-gradient(to right, transparent, var(--gold-mid), transparent);
-  margin: 30px auto;
-  transition: width 1.4s var(--ease);
-}
-.hero-rule.expanded { width: clamp(120px,22vw,220px) }
-
 /* ── ESTILO: name-block unificado — usado en hero Y en el card ──────────
    .name-first = "Martina" (grande arriba, JS iguala ancho a .name-last)
    .name-last  = "Coronel Guglielmone" (referencia de ancho)
@@ -381,13 +402,6 @@ main { position: relative; z-index: 10 }
 
 /* ── COUNTDOWN ── */
 #countdown { text-align: center }
-.countdown-label {
-  font-family: var(--f-ui);
-  font-size: .62rem; font-weight: 300;
-  letter-spacing: .32em; text-transform: uppercase;
-  color: var(--text-muted);
-  margin-bottom: 52px;
-}
 
 /* 4 boxes row — never wraps */
 .cd-row {
@@ -468,7 +482,7 @@ main { position: relative; z-index: 10 }
 /* Expired message */
 .cd-done {
   display: none;
-  font-family: var(--f-script);
+  font-family: var(--f-great);
   font-size: clamp(2.8rem,6vw,4.5rem);
   color: var(--gold);
   text-shadow: var(--shadow-gold);
@@ -476,16 +490,6 @@ main { position: relative; z-index: 10 }
 }
 .cd-done.show { display: block }
 .cd-row.hide  { display: none }
-
-/* ── ESTILO: cd-event-line — fecha debajo del countdown ── */
-.cd-event-line {
-  margin-top: 44px;
-  font-family: var(--f-ui);
-  font-size: .78rem; font-weight: 300;  /* era .62rem → ahora .78rem */
-  letter-spacing: .32em; text-transform: uppercase;
-  color: var(--text-faint);
-}
-.cd-event-line strong { color: var(--gold-mid); font-weight: 400 }
 
 /* Responsive: allow slight shrink on very small screens */
 @media(max-width:420px) {
@@ -603,12 +607,6 @@ main { position: relative; z-index: 10 }
 }
 .cal-tip.show { opacity: 1 }
 
-.info-label {
-  font-family: var(--f-ui);
-  font-size: .66rem; font-weight: 400;
-  letter-spacing: .32em; text-transform: uppercase;
-  color: var(--text-faint); margin-bottom: 10px;
-}
 /* ── ESTILO: info-value — valores principales del card (fecha, hora, lugar) ── */
 .info-value {
   font-family: var(--f-display);
@@ -652,7 +650,7 @@ main { position: relative; z-index: 10 }
 .rsvp-inner { max-width: 580px; margin: 0 auto }
 
 .rsvp-script {
-  font-family: var(--f-script);
+  font-family: var(--f-great);
   font-size: clamp(2.4rem,6vw,4.2rem);
   color: var(--gold);
   line-height: 1; margin-bottom: 12px;
@@ -790,24 +788,6 @@ footer {
   text-shadow: var(--shadow-text);
 }
 
-/* Music toggle */
-#music-btn {
-  position: fixed; bottom: 28px; right: 28px;
-  width: 46px; height: 46px; border-radius: 50%;
-  background: rgba(250,247,240,.9);
-  border: 1px solid rgba(184,144,46,.22);
-  display: flex; align-items: center; justify-content: center;
-  z-index: 800;
-  backdrop-filter: blur(14px);
-  transition: border-color .3s, transform .35s var(--spring), box-shadow .3s;
-  opacity: 0; animation: musicAppear 1s ease 3.8s forwards;
-}
-@keyframes musicAppear { to { opacity: 1 } }
-#music-btn:hover { border-color: var(--gold-mid); transform: scale(1.1); box-shadow: 0 6px 24px rgba(184,144,46,.2) }
-#music-btn.playing { background: rgba(184,144,46,.12); border-color: rgba(184,144,46,.38) }
-.mbars { display: flex; align-items: flex-end; gap: 2.5px; height: 14px }
-.mbar  { width: 2.5px; border-radius: 1.5px; background: var(--gold); transition: height .14s }
-
 /* ── SCROLL REVEAL SYSTEM ── */
 [data-reveal] {
   opacity: 0;
@@ -876,13 +856,23 @@ footer {
 }
 .hero-city {
   font-family: var(--f-ui);
-  font-size: clamp(.72rem,1vw,.86rem);
   font-weight: 300;
   letter-spacing: .32em;
   text-transform: uppercase;
-  color: var(--text-secondary);
   text-shadow: var(--shadow-text);
   margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.hero-city .hero-info-top {
+  font-size: clamp(1rem,1.8vw,1.3rem);
+  color: var(--style-1-color);
+}
+.hero-city .hero-info-bot {
+  font-size: clamp(.72rem,1vw,.86rem);
+  color: var(--text-secondary);
 }
 /* info-col with 2 lines */
 .hero-info-col {
@@ -903,7 +893,6 @@ footer {
   text-shadow: var(--shadow-text);
   white-space: nowrap;
 }
-.hero-info-top--pink { color: #E63280; }
 .hero-info-bot--pink { color: #E63280; }
 .hero-info-bot {
   font-family: var(--f-ui);
@@ -911,9 +900,12 @@ footer {
   font-weight: 300;
   letter-spacing: .24em;
   text-transform: uppercase;
-  color: var(--test-secondary);
+  color: var(--text-secondary);
   text-shadow: var(--shadow-text);
   white-space: nowrap;
+}
+.hero-info-bot--pink {
+  color: var(--style-1-color);
 }
 
 /* ── RESPONSIVE ── */
@@ -925,29 +917,40 @@ footer {
 }
 
 
-/* FIX ESPECIFICO HERO */
-#he-name .name-first { color: #E63280 !important; }
-#he-name .name-last  { color: #E63280 !important; }
-.hero-invite, .hero-xv { color: #E63280 !important; }
-
-/* FECHA Y HORA COLOR */
-.hero-info-top,
-.hero-info-day {
-  color: #E63280 !important;
+/* ── APLICACIÓN DE ESTILOS A ELEMENTOS ESPECÍFICOS ── */
+/* Estilo 1: Nombre primario en hero y card */
+#he-name .name-first,
+.card-name-block .name-first {
+  font-family: var(--style-1-font);
+  color: var(--style-1-color);
+  text-shadow: var(--shadow-text);
 }
 
+/* Estilo 1: Invitaciones y XV */
+.hero-invite,
+.hero-xv {
+  font-family: var(--style-1-font);
+  color: var(--style-1-color);
+  text-shadow: var(--shadow-text);
+}
 
-/* FIX PAGINAS INTERNAS COLOR Y FUENTE */
+/* Estilo 1: Localización en hero (Asunción, La Rivière) */
+.hero-city {
+  color: var(--style-1-color);
+}
+
+/* Estilo 3: Acentos en fechas y horas */
+.hero-info-top,
+.hero-info-day {
+  color: var(--style-3-color);
+}
+
+/* Estilo 3: Secciones internas */
 .section-overline,
 .section-headline,
 .info-value,
 .rsvp-script {
-  color: #E63280 !important;
-}
-
-/* Martina en card misma fuente que hero */
-.card-name-block .name-first {
-  font-family: var(--f-great) !important;
+  color: var(--style-3-color);
 }
 
 </style>
@@ -999,7 +1002,7 @@ footer {
   <div class="hero-info-bar" id="he-dt" aria-label="Sábado 23 de Mayo 2026, La Rivière">
     <span class="hero-info-col">
       <span class="hero-info-top">23 Mayo</span>
-      <span class="hero-info-bot hero-info-bot--pink">Sábado</span>
+      <span class="hero-info-bot">Sábado</span>
     </span>
     <span class="hero-info-sep" aria-hidden="true"></span>
     <div class="hero-info-center">
@@ -1008,15 +1011,15 @@ footer {
     </div>
     <span class="hero-info-sep" aria-hidden="true"></span>
     <span class="hero-info-col">
-      <span class="hero-info-top hero-info-top--pink">asunciòn</span>
-      <span class="hero-info-bot">2026</span>
+      <span class="hero-info-top">Asunción</span>
+      <span class="hero-info-bot">Paraguay</span>
     </span>
   </div>
 
-  <span class="hero-info-col">
-    <span class="hero-info-top hero-info-top--pink">La Rivière</span>
+  <div class="hero-city" id="he-city">
+    <span class="hero-info-top">La Rivière</span>
     <span class="hero-info-bot">Tenida Elegante</span>
-  </span>
+  </div>
 
   <div class="hero-scroll" aria-hidden="true">
     <div class="scroll-track"><div class="scroll-ball"></div></div>

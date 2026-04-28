@@ -26,10 +26,10 @@
 <meta name="twitter:description" content="Una noche para celebrar sueños, recuerdos y nuevos comienzos."/>
 <meta name="twitter:image"       content="https://playxperience.github.io/Martina-Coronel/preview.jpg"/>
 
-<!-- Fonts: Cormorant Garamond + Beau Rivage + DM Sans + Italianno + Cinzel + Great Vibes -->
+<!-- Fonts: Cormorant Garamond + Beau Rivage + DM Sans + Italianno + Cinzel + Ephesis -->
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Beau+Rivage&family=DM+Sans:wght@200;300;400;500&family=Italianno&family=Cinzel:wght@400;500&family=Great+Vibes&display=swap"/>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Beau+Rivage&family=DM+Sans:wght@200;300;400;500&family=Italianno&family=Cinzel:wght@400;500&family=Ephesis&display=swap"/>
 
 <style>
 
@@ -68,7 +68,7 @@
   --f-ui:      'DM Sans', system-ui, sans-serif;
   --f-countdown: 'Italianno', Georgia, serif;
   --f-cinzel:    'Cinzel', Georgia, serif;
-  --f-great:     'Great Vibes', cursive;
+  --f-great:     'Ephesis', cursive;
 
   /* --- Motion --- */
   --ease:   cubic-bezier(0.22, 1, 0.36, 1);
@@ -307,8 +307,25 @@ main { position: relative; z-index: 10 }
   align-items: stretch;
 }
 
-/* Card: JS ajusta letter-spacing del nombre al ancho del apellido */
-.card-name-block .name-first { font-size: clamp(1.9rem,4vw,3rem); line-height: 1.1; white-space: nowrap }
+/* Card: nombre en Ephesis — sin negative margins, contenedor controla espacio */
+.card-name-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-top: 2px;
+  margin-bottom: 6px;
+  overflow: hidden;
+}
+.card-name-block .name-first {
+  font-size: clamp(1.9rem,4vw,3rem);
+  line-height: .72;
+  white-space: nowrap;
+  letter-spacing: 0;
+  display: block;
+  padding-top: .22em;
+  padding-bottom: .14em;
+}
 .card-name-block .name-last  { font-size: clamp(.95rem,2vw,1.45rem); white-space: nowrap }
 
 /* sin vignette en hero — el parallax ya da profundidad suficiente */
@@ -533,16 +550,9 @@ main { position: relative; z-index: 10 }
   letter-spacing: .18em;
   color: var(--gold-mid);
   text-shadow: var(--shadow-text);
-  margin-bottom: 14px;
+  margin-bottom: 4px;
 }
-/* card-name-block container */
-.card-name-block {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  margin-bottom: 6px;
-}
+/* ── ornament ── */
 .card-subtitle {
   font-family: var(--f-display);
   font-style: italic;
@@ -924,6 +934,7 @@ footer {
   font-family: var(--style-1-font);
   color: var(--style-1-color);
   text-shadow: var(--shadow-text);
+  line-height: .85;
 }
 
 /* Estilo 1: Invitaciones y XV */
@@ -1139,8 +1150,8 @@ footer {
             <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
           </div>
           <p class="info-value">La Rivière</p>
-    <!-- Lugar confirmado: La Rivière, Paseo del Yacht, Lambaré -->
-          <p class="info-note">Paseo del Yacht · Lambaré</p>
+    <!-- Lugar confirmado: La Rivière, Paseo del Yacht, Asunción -->
+          <p class="info-note">Paseo del Yacht · Asunción</p>
         </div>
 
       </div><!-- info-grid -->
